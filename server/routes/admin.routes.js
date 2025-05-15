@@ -1,5 +1,7 @@
-import epress from 'express';
-const router = epress.Router();
+import express from 'express';
+const router = express.Router();
+
+import { signup, login, logout } from '../controllers/admin.controllers.js';
 
 
 router.post('/signup', signup);

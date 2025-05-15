@@ -5,13 +5,19 @@ import cookieParser from 'cookie-parser';
 
 import connectDB from './Database/dbConnect.js';
 import authAdminRoutes from './routes/admin.routes.js'
+import authUserRouetes from './routes/user.routes.js'
 
-dotenv.config();
 
 const app = express();
 app.use(cookieParser());
 
+dotenv.config();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
 app.use('/auth/admin', authAdminRoutes );
+app.use('/auth/user', authUserRouetes);
 
 const server = http.createServer(app);
 
