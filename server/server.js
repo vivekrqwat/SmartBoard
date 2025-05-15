@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './Database/dbConnect.js';
 import authAdminRoutes from './routes/admin.routes.js'
 import authUserRouetes from './routes/user.routes.js'
+import classRoomRoutes from './routes/classroom.routes.js'
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth/admin', authAdminRoutes );
 app.use('/auth/user', authUserRouetes);
+app.use('/classroom', classRoomRoutes);
 
 const server = http.createServer(app);
 

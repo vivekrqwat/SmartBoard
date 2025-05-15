@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { signup, login, logout } from '../controllers/admin.controllers.js';
+import { signup, login, logout } from '../controllers/admin.controller.js';
 
 
 router.post('/signup', signup);
