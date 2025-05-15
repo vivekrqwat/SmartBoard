@@ -11,6 +11,7 @@ export const ThemeProvider=({children})=>{
     const [atd,setatd]=useState([]);
     const[mark,setmark]= useState(Array(100).fill(0));
     const[rollnumber,setrollnumber]=useState();
+      const [roomid, setroomid] = useState('');
     const themeValue={
         pen,
         penColor,
@@ -22,7 +23,8 @@ export const ThemeProvider=({children})=>{
         setusername,
         atd,setatd,
         mark,setmark,
-        rollnumber,setrollnumber
+        rollnumber,setrollnumber,
+        roomid,setroomid
     }
     return(
         <ThemeContext.Provider value={themeValue}>

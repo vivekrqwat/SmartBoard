@@ -17,7 +17,7 @@ export default function Dashboard() {
   const socketref=useRef(null);
   const canvasRef = useRef(null);
     const[message,setmessage]=useState('');
-    const{pen,penColor,username,setatd,atd,mark,setmark}=useContext(ThemeContext);
+    const{pen,penColor,username,setatd,atd,mark,setmark,roomid}=useContext(ThemeContext);
     const boxstyle={
         display:"flex",
         justifyContent:"space-evenly",
@@ -34,7 +34,7 @@ export default function Dashboard() {
     
       const paths = await canvasRef.current.exportPaths();
       socketref.current.emit('drawing', {
-        roomid: 'shared-board',
+        roomid: roomid,
         data: paths,
       });
     
@@ -51,7 +51,7 @@ const changeMark=(number)=>{
   console.log(mark,",",index);
   let updatemark=JSON.parse(localStorage.getItem('mark'));
   console.log("updated",updatemark);
-  updatemark[index]=index;
+  updatemark[index]+=1;
   localStorage.setItem('mark', JSON.stringify(updatemark));
   // console.log(updatemark[index],"yha hua change");
 
@@ -68,13 +68,14 @@ const changeMark=(number)=>{
       const init=async()=>{
         socketref.current=await initsocket();
         socketref.current.emit('join',{
-          id:"123"
+          id:roomid
         })
-        socketref.current.emit('join', { roomid: 'shared-board' });
+        socketref.current.emit('join', { roomid: roomid });
         socketref.current.on("r-drawing",(data)=>{
         // console.log("data",data);
         // console.log("data2",canvasRef.current);
         console.log("r-draw")
+        console.log(roomid)
           if(canvasRef.current){
             canvasRef.current.loadPaths(data);
            
@@ -89,10 +90,6 @@ const changeMark=(number)=>{
             toast(
               <Attendance socketref={socketref}></Attendance>
             )
-          }else if(username=='admin'){
-            toast.info("attendance has been sendend",{
-              autoClose:2000
-            });
           }
         })
 
@@ -112,7 +109,7 @@ const changeMark=(number)=>{
 
       return () => {
         if (socketref.current) {
-          socketref.current.emit('leave', { roomid: 'shared-board' });
+          socketref.current.emit('leave', { roomid: roomid });
           // socketref.current.disconnect(); // optional
         }
       };
@@ -126,13 +123,14 @@ const changeMark=(number)=>{
       e.preventDefault();
       if(socketref.current && username=='admin'){
         socketref.current.emit('send-attendance',{
-          message:"attendance is sended"
+          message:"attendance is sended",
+          roomid:roomid
         })
       }
     }
    const sendRequest=(e)=>{
     if(socketref.current){
-      socketref.current.emit('sendreq',{message:username})
+      socketref.current.emit('sendreq',{message:username,roomid:roomid})
     }
    }
    //senMail
@@ -149,8 +147,8 @@ const changeMark=(number)=>{
       const mark1= JSON.parse(localStorage.getItem('mark')) || [];
 
       let message="";
-      {mark1.map((i)=>{
-       i>=3 ?message+=`${i},`:"";
+      {mark1.map((i,key)=>{
+       i>=2?message+=`${key},`:"";
       })
 
       }

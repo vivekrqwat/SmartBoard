@@ -21,20 +21,20 @@ io.on("connection",socket=>{
         socket.to(roomid).emit("r-drawing",data)
     })
 
-    socket.on('send-attendance',({message})=>{
-        console.log(message);
-        socket.broadcast.emit('r-attendance',{message});
+    socket.on('send-attendance',({message,roomid})=>{
+        console.log(message+"to"+roomid);
+        socket.to(roomid).emit('r-attendance',{message});
     })
     
 
-    socket.on('sendreq',({message})=>{
+    socket.on('sendreq',({message,roomid})=>{
         console.log('message name is ',message);
-        socket.broadcast.emit('r-sendreq',{message})
+        socket.to(roomid).emit('r-sendreq',{message})
     })
 
-    socket.on('mark',({rollnumber})=>{
+    socket.on('mark',({rollnumber,roomid})=>{
         console.log("meassagw",rollnumber);
-        socket.broadcast.emit("r-mark",{rollnumber});
+        socket.to(roomid).emit("r-mark",{rollnumber});
     })
 
     socket.on("leave",({roomid})=>{

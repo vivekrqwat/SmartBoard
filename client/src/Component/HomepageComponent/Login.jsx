@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../ThemeContex';
 
 export default function Login() {
-  const [roomid, setroomid] = useState('');
+  // const [roomid, setroomid] = useState('');
   const [uname, setuname] = useState('');
   const navigate = useNavigate();
-  const { setusername } = useContext(ThemeContext);
+  const { setusername ,roomid,setroomid} = useContext(ThemeContext);
 
   const goToDashboard = (e) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ export default function Login() {
   const handlejoin=()=>{
     if(uname=='admin'){
       console.log("setstoreage");
-      localStorage.setItem('mark', JSON.stringify([]));
+      localStorage.setItem('mark', JSON.stringify(Array(100).fill(0)));
     }
   }
 

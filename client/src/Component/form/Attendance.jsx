@@ -5,7 +5,7 @@ import { initsocket } from '../../socket';
 import { ThemeContext } from '../../ThemeContex';
 export default function Attendance({socketref}) {
   console.log("socketref",socketref);
-    const{rollnumber,setrollnumber}=useContext(ThemeContext)
+    const{rollnumber,setrollnumber,roomid}=useContext(ThemeContext)
    
     const popupstyle={
         height:"100px",
@@ -49,7 +49,7 @@ export default function Attendance({socketref}) {
       const rollHandler=(e)=>{
         console.log("rollnumber is",rollnumber);
         if(socketref.current){
-          socketref.current.emit('mark',{rollnumber});
+          socketref.current.emit('mark',{rollnumber,roomid});
         }
         
         toast.dismiss();
