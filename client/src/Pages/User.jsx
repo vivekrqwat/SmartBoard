@@ -1,11 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
     const [isSignup, setIsSignup] = useState(false);
-
+    const navigate = useNavigate();
     const handleToggleForm = () => {
         setIsSignup(!isSignup);
     };
+
+    const handleAdminLogin = (e) =>{
+        e.preventDefault();
+        navigate("/admin/login");
+    }
 
     const LoginForm = (
         <div className='border rounded-4 p-5 m-5 w-75 ' style={{ backgroundColor: "rgba(230, 219, 163, 0.58)" }}>
@@ -75,7 +81,7 @@ const Hero = () => {
                 <nav className='d-flex justify-content-between align-items-center'>
                     <p class="text-start fw-bold fs-1 py-2 text-warning">Delta SmartBoard</p>
                     <div>
-                        <button type="button" class="btn btn-outline-dark btn-sm py-1 px-3 fs-6 fw-semibold border border-3 border-dark rounded-4 text-white">Admin Login</button>
+                        <button type="button" class="btn btn-outline-dark btn-sm py-1 px-3 fs-6 fw-semibold border border-3 border-dark rounded-4 text-white" onClick={handleAdminLogin}>Admin Login</button>
                     </div>
                 </nav>
             </div>

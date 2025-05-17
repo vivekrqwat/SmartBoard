@@ -2,13 +2,14 @@ const { Socket } = require("dgram");
 const express=require("express");
 const app=express();
 const http=require("http");
+const { connect } = require("http2");
+const { disconnect } = require("process");
 const {Server}=require("socket.io")
 const server=http.createServer(app)
 const io=new Server(server);
 
 // Store admin information
 const roomAdmins = new Map();
-
 io.on("connection",socket=>{
     console.log("you socket id is",socket.id)
     socket.on("join",({roomid})=>{
@@ -21,20 +22,20 @@ io.on("connection",socket=>{
         socket.to(roomid).emit("r-drawing",data)
     })
 
-    socket.on('send-attendance',({message,roomid})=>{
-        console.log(message+"to"+roomid);
-        socket.to(roomid).emit('r-attendance',{message});
+    socket.on('send-attendance',({message})=>{
+        console.log(message);
+        socket.broadcast.emit('r-attendance',{message});
     })
     
 
-    socket.on('sendreq',({message,roomid})=>{
+    socket.on('sendreq',({message})=>{
         console.log('message name is ',message);
-        socket.to(roomid).emit('r-sendreq',{message})
+        socket.broadcast.emit('r-sendreq',{message})
     })
 
-    socket.on('mark',({rollnumber,roomid})=>{
+    socket.on('mark',({rollnumber})=>{
         console.log("meassagw",rollnumber);
-        socket.to(roomid).emit("r-mark",{rollnumber});
+        socket.broadcast.emit("r-mark",{rollnumber});
     })
 
     socket.on("leave",({roomid})=>{
