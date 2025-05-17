@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
+  
   university_rollno: {
     type: String,
     required: true,
