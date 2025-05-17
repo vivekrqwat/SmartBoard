@@ -5,15 +5,15 @@ import generateToken from '../utils/generateTokens.js';
 
 export const signup = async (req, res)=>{
     try {
-        const { username, fullname, password, confirmPassword, email, university_rollno, class_rollno } = req.body;
+        const { fullname, password, confirmPassword, email, university_rollno, class_rollno } = req.body;
 
         if(password !== confirmPassword){
             return res.status(400).json({error: 'Passwords do not match'})
         }
 
-        const existingAdmin = await User.findOne({username});
+        const existingAdmin = await User.findOne({university_rollno});
         if(existingAdmin){
-            return res.status(400).json({error: 'Admin already exists'})
+            return res.status(400).json({error: 'User already exists'})
         }
 
         const existingEmail = await User.findOne({email})
@@ -28,7 +28,7 @@ export const signup = async (req, res)=>{
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ username, fullname, password: hashedPassword, email, university_rollno, class_rollno });
+        const newUser = new User({ fullname, password: hashedPassword, email, university_rollno, class_rollno });
         generateToken(newUser._id, res);
         await newUser.save();
         res.status(201).json({ newUser });
@@ -42,9 +42,9 @@ export const signup = async (req, res)=>{
 export const login = async (req,res)=>{
     try {
         
-        const { username, password } = req.body;
+        const { university_rollno, password } = req.body;
 
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ university_rollno });
         if (!user) {
             return res.status(404).json({ error: 'user not found' });
         }
@@ -54,7 +54,7 @@ export const login = async (req,res)=>{
             return res.status(401).json({ error: 'Invalid password' });
         }
         generateToken(user._id, res);
-        res.status(200).json({username: user.username, fullname: user.fullname, email: user.email, university_rollno: user.university_rollno, class_rollno: user.class_rollno });
+        res.status(200).json({ fullname: user.fullname, email: user.email, university_rollno: user.university_rollno, class_rollno: user.class_rollno });
 
     } catch (error) {
         res.status(400).json({ error: error.message });

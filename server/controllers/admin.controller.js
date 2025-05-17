@@ -5,13 +5,13 @@ import generateToken from '../utils/generateTokens.js';
 
 export const signup = async (req, res)=>{
     try {
-        const { username, fullname, password, confirmPassword, email, employee_id } = req.body;
+        const { fullname, password, confirmPassword, email, employee_id } = req.body;
 
         if(password !== confirmPassword){
             return res.status(400).json({error: 'Passwords do not match'})
         }
 
-        const existingAdmin = await Admin.findOne({username});
+        const existingAdmin = await Admin.findOne({employee_id});
         if(existingAdmin){
             return res.status(400).json({error: 'Admin already exists'})
         }
@@ -21,14 +21,10 @@ export const signup = async (req, res)=>{
             return res.status(400).json({error: 'Email already exists'})
         }
 
-        const existingEmployeeId = await Admin.findOne({employee_id});
-        if(existingEmployeeId){
-            return res.status(400).json({error: 'Employee ID already exists'})
-        }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newAdmin = new Admin({ username, fullname, password: hashedPassword, email, employee_id });
+        const newAdmin = new Admin({ fullname, password: hashedPassword, email, employee_id });
         generateToken(newAdmin._id, res);
         await newAdmin.save();
         res.status(201).json({ newAdmin });
@@ -42,9 +38,9 @@ export const signup = async (req, res)=>{
 export const login = async (req,res)=>{
     try {
         
-        const { username, password } = req.body;
+        const { employee_id, password } = req.body;
 
-        const admin = await Admin.findOne({ username });
+        const admin = await Admin.findOne({ employee_id });
         if (!admin) {
             return res.status(404).json({ error: 'Admin not found' });
         }
@@ -54,7 +50,7 @@ export const login = async (req,res)=>{
             return res.status(401).json({ error: 'Invalid password' });
         }
         generateToken(admin._id, res);
-        res.status(200).json({username: admin.username, fullname: admin.fullname, email: admin.email, employee_id: admin.employee_id });
+        res.status(200).json({fullname: admin.fullname, email: admin.email, employee_id: admin.employee_id });
 
     } catch (error) {
         res.status(400).json({ error: error.message });
