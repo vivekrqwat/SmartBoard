@@ -1,16 +1,13 @@
+import mongoose from "mongoose";
 
-import mongoose, { mongo } from "mongoose";
-
-const connectDB = async () =>{
-    try{                      
-        const  MONGO_URI='mongodb+srv://smartboard:smartboard1234@cluster0.esrmk.mongodb.net/smartboard';
-
-        await mongoose.connect(MONGO_URI)
-     
-        console.log("MongoDb Connected")
-
-    }catch(error){
-        console.log('Error connecting to Mongodb: ',error); 
+const connectDB = async () => {
+    try {
+        const MONGO_URI = process.env.MONGODB_URI;
+        await mongoose.connect(MONGO_URI);
+        console.log("MongoDB Connected Successfully");
+    } catch (error) {
+        console.log('Error connecting to MongoDB: ', error);
+        process.exit(1);
     }
 }
 
