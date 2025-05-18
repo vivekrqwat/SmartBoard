@@ -95,10 +95,6 @@ const Adminsignup = () => {
       <Link className="btn btn-link w-100 text-dark fw-bold" style={{ textDecoration: "none" }} to="/admin-login">
         Already have an account? <span className='text-success' style={{ textDecoration: "underline", textUnderlineOffset: "5px", textDecorationColor: "black", textDecorationThickness: "2px" }}>Login</span>
       </Link>
-      <br />
-      <Link className="btn btn-link w-100 text-dark fw-bold" style={{ textDecoration: "none" }} to="/user-signup">
-        Are you a User? <span className='text-success' style={{ textDecoration: "underline", textUnderlineOffset: "5px", textDecorationColor: "black", textDecorationThickness: "2px" }}>Login</span>
-      </Link>
     </div>
   );
 };

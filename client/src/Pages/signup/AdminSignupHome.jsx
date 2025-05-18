@@ -1,17 +1,15 @@
-import { useState } from "react";
-import AdminLogin from "./login/AdminLogin";
 import { useNavigate } from "react-router-dom";
+import Adminsignup from "./Adminsignup";
 
+const AdminSignupHome = () => {
 
-const Admin = () =>{
-    
     const navigate = useNavigate();
     const handleUserLogin = (e) =>{
         e.preventDefault();
         navigate("/user-login");
     }
-    
-    return (
+
+    return(
         <div className='container-fluid p-0 vh-100 overflow-hidden' style={{
             background: "linear-gradient(150deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%)"
         }}>
@@ -27,7 +25,7 @@ const Admin = () =>{
                 <div className='w-100 d-flex align-items-center' style={{ height: "85vh" }}>
                     <div className='row w-100'>
                         <div className='col d-flex justify-content-center w-50'>
-                            <AdminLogin/>
+                            <Adminsignup />
                         </div>
                         <div className='col d-flex align-items-center' style={{ color: "black" }}>
                             <div className='d-flex p-5 mx-5 my-5 flex-column justify-content-center border rounded-4' style={{ backgroundColor: "rgba(230, 219, 163, 0.58)" }}>
@@ -51,7 +49,7 @@ const Admin = () =>{
             </div>
 
         </div>
-    );
-};
+    )
+}
 
-export default Admin;
+export default AdminSignupHome;

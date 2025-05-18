@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import UserLogin from './login/UserLogin';
+import { useNavigate } from 'react-router-dom';
 
-const Hero = () => {
+const User = () => {
+    const navigate = useNavigate();
+    const handleAdminLogin = (e) =>{
+        e.preventDefault();
+        navigate("/admin-login");
+    }
   
     return (
         <div className='container-fluid p-0 vh-100 overflow-hidden' style={{
@@ -46,4 +52,4 @@ const Hero = () => {
     );
 };
 
-export default Hero;
+export default User;

@@ -11,7 +11,7 @@ export default function Home() {
       width="100%" 
       position="relative" 
       overflow="hidden" 
-      height="100vh"
+      height="92vh"
       sx={{
         background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
       }}
@@ -27,7 +27,7 @@ export default function Home() {
           zIndex={2}
           sx={{
             minHeight: '100vh',
-            padding: { xs: '20px', sm: '40px' }
+            padding: { xs: '10px', sm: '10px' }
           }}
         >
           <Typography

@@ -55,9 +55,6 @@ const UserLogin = () => {
         Don't have an account? <span className='text-success'>Sign Up</span>
       </Link>
       <br />
-      <Link className="btn btn-link w-100 text-dark fw-bold" to="/admin-login">
-        Are you an Admin? <span className='text-success'>&nbsp;Login</span>
-      </Link>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import Home from './Pages/Home';
 import { ThemeProvider } from './ThemeContex';
 import Hero from './Pages/User';
-// import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Admin from './Pages/Admin';
 import AdminLogin from './Pages/login/AdminLogin';
 import Adminsignup from './Pages/signup/Adminsignup';
@@ -15,6 +15,9 @@ import UserHome from './Pages/home/UserHome';
 import AdminHome from './Pages/home/AdminHome';
 import { Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import User from './Pages/User';
+import AdminSignupHome from './Pages/signup/AdminSignupHome';
+import UserSignupHome from './Pages/signup/UserSignupHome';
 
 function App() {
   const {authUser} = useAuthContext();
@@ -24,12 +27,12 @@ function App() {
     <ThemeProvider>
       <Router>
         <Routes>
-          <Route path="/"  element= {!authUser ? <UserLogin/> : (authUser === "admin" ? <AdminHome /> : <UserHome />)}/>
+          <Route path="/"  element= {!authUser ? <User /> : (authUser === "admin" ? <AdminHome /> : <UserHome />)}/>
 
-          <Route path='/admin-login' element={!authUser ? <AdminLogin /> : <Navigate to="/" />} /> 
-          <Route path='/admin-signup' element={!authUser ? <Adminsignup /> : <Navigate to="/" />} /> 
-          <Route path='/user-login' element={!authUser ? <UserLogin /> : <Navigate to="/" />} /> 
-          <Route path='/user-signup' element={!authUser ? <Usersignup /> : <Navigate to="/" />} /> 
+          <Route path='/admin-login' element={!authUser ? <Admin/> : <Navigate to="/" />} /> 
+          <Route path='/admin-signup' element={!authUser ? <AdminSignupHome /> : <Navigate to="/" />} /> 
+          <Route path='/user-login' element={!authUser ? <User /> : <Navigate to="/" />} /> 
+          <Route path='/user-signup' element={!authUser ? <UserSignupHome /> : <Navigate to="/" />} /> 
       
           
           <Route path="/editor/:roomid" element={<Dashboard />} />

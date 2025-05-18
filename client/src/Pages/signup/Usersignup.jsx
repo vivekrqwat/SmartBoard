@@ -67,8 +67,6 @@ const Usersignup = () => {
 
 
             <Link className="btn btn-link w-100 text-dark fw-bold" to="/user-login">Already have an account? <span className='text-success'>&nbsp;Login</span> </Link>
-            <br />
-            <Link className="btn btn-link w-100 text-dark fw-bold" to="/admin-signup">Are you an Admin? <span className='text-success'>&nbsp;Login</span> </Link>
         </div>
   )
 }
