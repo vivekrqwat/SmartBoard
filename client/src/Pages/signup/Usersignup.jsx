@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import useUserSignup from '../../Hooks/useUserSignup';
 
 const Usersignup = () => {
     const [input, setInput] = useState({
         fullname: "",
         email: "",
-        universityRollNo: "",
-        classRollNo: "",
+       university_rollno :"",
+        class_rollno:"",
         password: "",
         confirmPassword: ""
     });
 
-    const handleSubmit = (e) => {
+    
+
+    const {signup} = useUserSignup();
+
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log(input);
+        await signup(input);
     }
 
   return (
@@ -38,11 +43,11 @@ const Usersignup = () => {
             <div className="mb-3 mt-3 d-flex justify-content-between w-100">
                 <div className='w-50'>
                     <label className="form-label fs-5 fw-bold">University Roll No.</label>
-                    <input type="text" className="form-control" value={input.universityRollNo} onChange={(e) => setInput({ ...input, universityRollNo: e.target.value })} />
+                    <input type="text" className="form-control" value={input.university_rollno} onChange={(e) => setInput({ ...input, university_rollno: e.target.value })} />
                 </div>
                 <div className='w-50 ms-5'>
                     <label className="form-label fs-5 fw-bold">Class Roll No.</label>
-                    <input type="text" className="form-control" value={input.classRollNo} onChange={(e) => setInput({ ...input, classRollNo: e.target.value })} />
+                    <input type="text" className="form-control" value={input.class_rollno} onChange={(e) => setInput({ ...input, class_rollno: e.target.value })} />
                 </div>
             </div>
             <div className="mb-3 mt-3 d-flex justify-content-between w-100">

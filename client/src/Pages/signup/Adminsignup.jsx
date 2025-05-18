@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
+import useAdminSignup from '../../Hooks/useAdminSignup';
 
 const Adminsignup = () => {
+
+  const { signup } = useAdminSignup();
+
   const [input, setInput] = useState({
     email: "",
-    fullName: "",
-    employeeId: "",
+    fullname: "",
+    employee_id: "",
     password: "",
     confirmPassword: ""
   });
 
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(input);
+    await signup(input);
+
   };
 
   return (
@@ -45,8 +51,8 @@ const Adminsignup = () => {
             <input
               type="text"
               className="form-control"
-              value={input.fullName}
-              onChange={(e) => setInput({ ...input, fullName: e.target.value })}
+              value={input.fullname}
+              onChange={(e) => setInput({ ...input, fullname: e.target.value })}
             />
           </div>
           <div className='w-50 ms-5'>
@@ -54,8 +60,8 @@ const Adminsignup = () => {
             <input
               type="text"
               className="form-control"
-              value={input.employeeId}
-              onChange={(e) => setInput({ ...input, employeeId: e.target.value })}
+              value={input.employee_id}
+              onChange={(e) => setInput({ ...input, employee_id: e.target.value })}
             />
           </div>
         </div>

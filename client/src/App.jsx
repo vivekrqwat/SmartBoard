@@ -10,21 +10,34 @@ import AdminLogin from './Pages/login/AdminLogin';
 import Adminsignup from './Pages/signup/Adminsignup';
 import UserLogin from './Pages/login/UserLogin';
 import Usersignup from './Pages/signup/Usersignup';
+import { useAuthContext } from './authContext/AuthContext';
+import UserHome from './Pages/home/UserHome';
+import AdminHome from './Pages/home/AdminHome';
+import { Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
+  const {authUser} = useAuthContext();
+  console.log(authUser)
+
   return (
     <ThemeProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path='/admin-login' element={<AdminLogin />} /> 
-          <Route path='/admin-signup' element={<Adminsignup />} /> 
-          <Route path='/user-login' element={<UserLogin />} /> 
-          <Route path='/user-signup' element={<Usersignup />} /> 
+          <Route path="/"  element= {!authUser ? <UserLogin/> : (authUser === "admin" ? <AdminHome /> : <UserHome />)}/>
+
+          <Route path='/admin-login' element={!authUser ? <AdminLogin /> : <Navigate to="/" />} /> 
+          <Route path='/admin-signup' element={!authUser ? <Adminsignup /> : <Navigate to="/" />} /> 
+          <Route path='/user-login' element={!authUser ? <UserLogin /> : <Navigate to="/" />} /> 
+          <Route path='/user-signup' element={!authUser ? <Usersignup /> : <Navigate to="/" />} /> 
+      
           
           <Route path="/editor/:roomid" element={<Dashboard />} />
         </Routes>
       </Router>
+        
+        <Toaster/>
+
     </ThemeProvider>
   );
 }

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useAdminLogin from '../../Hooks/useAdminLogin';
 
 const AdminLogin = () => {
   const [input, setInput] = useState({
-    employeeId: "",
+    employee_id: "",
     password: ""
   });
 
-  const handleSubmit = (e) => {
+  const {login} = useAdminLogin();
+
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    console.log(input);
+    await login(input);
   };
 
   return (
@@ -22,8 +25,8 @@ const AdminLogin = () => {
           <input
             type="text"
             className="form-control"
-            value={input.employeeId}
-            onChange={(e) => setInput({ ...input, employeeId: e.target.value })}
+            value={input.employee_id}
+            onChange={(e) => setInput({ ...input, employee_id: e.target.value })}
           />
         </div>
         <div className="mb-3">

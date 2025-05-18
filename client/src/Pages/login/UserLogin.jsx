@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useUserLogin from '../../Hooks/useUserLogin';
 
 const UserLogin = () => {
   const [input, setInput] = useState({
-    universityRollNo: "",
+    university_rollno: "",
     password: ""
   });
 
-  const handleSubmit = (e) => {
+  const {login}= useUserLogin();
+ 
+  const handleSubmit =async (e) => {
     e.preventDefault();
+    await login(input);
+
     console.log(input);
   }
 
@@ -22,8 +27,8 @@ const UserLogin = () => {
           <input
             type="text"
             className="form-control"
-            value={input.universityRollNo}
-            onChange={(e) => setInput({ ...input, universityRollNo: e.target.value })}
+            value={input.university_rollno}
+            onChange={(e) => setInput({ ...input, university_rollno: e.target.value })}
           />
         </div>
         <div className="mb-3">
