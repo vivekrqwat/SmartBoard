@@ -5,7 +5,7 @@ import { useAuthContext } from '../authContext/AuthContext';
 
 const useAdminLogin = () => {
 
-    const {setAuthUser} = useAuthContext();
+    const {setAuthUser, setUser} = useAuthContext();
 
    
     const login = async (input) => {
@@ -33,6 +33,10 @@ const useAdminLogin = () => {
             // Store user and update context
             localStorage.setItem("user-info", "admin");
             setAuthUser("admin");
+
+            localStorage.setItem("user", JSON.stringify(data));
+            setUser(data);
+
             toast.success("Login successful!");
             console.log(data);
 

@@ -31,7 +31,7 @@ export const signup = async (req, res)=>{
         const newUser = new User({ fullname, password: hashedPassword, email, university_rollno, class_rollno });
         generateToken(newUser._id, res);
         await newUser.save();
-        res.status(201).json({ newUser });
+        res.status(201).json({ _id :newUser._id,fullname: newUser.fullname, university_rollno: newUser.university_rollno, class_rollno: newUser.class_rollno });
 
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -54,7 +54,7 @@ export const login = async (req,res)=>{
             return res.status(401).json({ error: 'Invalid password' });
         }
         generateToken(user._id, res);
-        res.status(200).json({ fullname: user.fullname, email: user.email, university_rollno: user.university_rollno, class_rollno: user.class_rollno });
+        res.status(200).json({_id: user._id, fullname: user.fullname, university_rollno: user.university_rollno, class_rollno: user.class_rollno });
 
     } catch (error) {
         res.status(400).json({ error: error.message });

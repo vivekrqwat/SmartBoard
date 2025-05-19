@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../authContext/AuthContext";
 
 const Logout = () => {
-    const { setAuthUser } = useAuthContext();
+    const { setAuthUser, setUser } = useAuthContext();
     const navigate = useNavigate();
     const handleLogout = (e) => {
         e.preventDefault();
         localStorage.removeItem("user-info");
         setAuthUser(null);
+        localStorage.removeItem("user")
+        setUser(null)
+
         console.log("Item removed");
         navigate("/");
     }

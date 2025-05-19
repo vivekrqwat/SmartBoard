@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { useAuthContext } from "../authContext/AuthContext.jsx";
 
 const useUserLogin = () => {
-    const { setAuthUser } = useAuthContext();
+    const { setAuthUser , setUser} = useAuthContext();
 
     const login = async (input) => {
         const isValid = validateInput(input);
@@ -30,6 +30,10 @@ const useUserLogin = () => {
             // Store user and update context
             localStorage.setItem("user-info", "user");
             setAuthUser("user");
+
+           localStorage.setItem("user", JSON.stringify(data));
+            setUser(data);
+
             toast.success("Login successful!");
             console.log(data);
 

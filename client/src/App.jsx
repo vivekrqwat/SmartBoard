@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import Home from './Pages/Home';
 import { ThemeProvider } from './ThemeContex';
 import Hero from './Pages/User';
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import Admin from './Pages/Admin';
 import AdminLogin from './Pages/login/AdminLogin';
 import Adminsignup from './Pages/signup/Adminsignup';

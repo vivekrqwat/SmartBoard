@@ -15,9 +15,9 @@ const User = () => {
         }}>
             <div className='container-fluid px-4' >
                 <nav className='d-flex justify-content-between align-items-center'>
-                    <p class="text-start fw-bold fs-1 py-2 text-warning">Delta SmartBoard</p>
+                    <p className="text-start fw-bold fs-1 py-2 text-warning">Delta SmartBoard</p>
                     <div>
-                        <button type="button" class="btn btn-outline-dark btn-sm py-1 px-3 fs-6 fw-semibold border border-3 border-dark rounded-4 text-white" onClick={handleAdminLogin}>Admin Login</button>
+                        <button type="button" className="btn btn-outline-dark btn-sm py-1 px-3 fs-6 fw-semibold border border-3 border-dark rounded-4 text-white" onClick={handleAdminLogin}>Admin Login</button>
                     </div>
                 </nav>
             </div>
