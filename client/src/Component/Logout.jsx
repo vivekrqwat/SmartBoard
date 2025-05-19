@@ -11,9 +11,21 @@ const Logout = () => {
         console.log("Item removed");
         navigate("/");
     }
+
+    /* Make it dynamic. Fetch username database of admin and replace it */
+    const userName = "Rogue Trooper";
+
+    
     return (
         <nav class="navbar p-0 m-0" style={{ height: "8vh", background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)" }}>
-            <div class="container-fluid d-flex justify-content-end me-5">
+            <div class="container-fluid d-flex justify-content-between me-5">
+
+
+                {/* Replace it here */}
+                <p className="fs-3 fw-bold my-auto">{userName}</p>
+
+
+
                 <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
             </div>
         </nav>
