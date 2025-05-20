@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../authContext/AuthContext";
+import toast from 'react-hot-toast'
 
 const Logout = () => {
     const { setAuthUser, setUser } = useAuthContext();
@@ -12,6 +13,7 @@ const Logout = () => {
         setUser(null)
 
         console.log("Item removed");
+        toast.success("Logout Succesfully");
         navigate("/");
     }
     return (
