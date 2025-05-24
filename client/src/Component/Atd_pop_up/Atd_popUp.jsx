@@ -5,7 +5,10 @@ export const Atd_popUp = ({ message }) => {
      const navigate = useNavigate();
   const handleCopy = () => {
     navigator.clipboard.writeText(message);
+     
        localStorage.removeItem('mark');
+        localStorage.removeItem('students');
+        localStorage.removeItem('username')
     navigate('/');
     
    
