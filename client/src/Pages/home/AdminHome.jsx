@@ -55,43 +55,132 @@ const AdminHome = () => {
     setCurrentItem(item);
   }
 
+
+  const [searchTerm, setSearchTerm] = useState('');
+  function isEqualIgnoreCase(a, b) {
+    const charCodeA = a.charCodeAt(0);
+    const charCodeB = b.charCodeAt(0);
+    const normA = (charCodeA >= 65 && charCodeA <= 90) ? charCodeA + 32 : charCodeA;
+    const normB = (charCodeB >= 65 && charCodeB <= 90) ? charCodeB + 32 : charCodeB;
+    return normA === normB;
+  }
+
+  let manuallyFilteredData = [];
+  for (let i = 0; i < sortedData.length; i++) {
+    const item = sortedData[i];
+    const subject = item.subject;
+    const date = item.date;
+    const term = searchTerm;
+    let matchFound = false;
+
+    for (let j = 0; j <= subject.length - term.length; j++) {
+      let k = 0;
+      while (k < term.length && isEqualIgnoreCase(subject[j + k], term[k])) {
+        k++;
+      }
+      if (k === term.length) {
+        matchFound = true;
+        break;
+      }
+    }
+
+    for (let j = 0; j <= date.length - term.length; j++) {
+      let k = 0;
+      while (k < term.length && isEqualIgnoreCase(date[j + k], term[k])) {
+        k++;
+      }
+      if (k === term.length) {
+        matchFound = true;
+        break;
+      }
+    }
+
+    if (matchFound || term === '') {
+      manuallyFilteredData.push(item);
+    }
+  }
+
   return (
     <div className='container-fluid m-0 p-0 w-100' style={{ background: "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)" }}>
       <Logout />
-      <div className='d-flex' style={{ height: "92vh" }}>
-        <div className='w-25 border-end border-secondary border-4 pt-3' >
-          <h3 className='text-center fw-bold border-bottom border-secondary border-3 pb-3 font-monospace'>Previous Meetings</h3>
-          {sortedData.map((item, index) => (
-            <div key={index} className='border rounded-4 border-success border-4 m-2'>
-              <button className='btn btn-warning w-100 rounded-4' onClick={() => handleInfo(item)}>
-                <div>
-                  <p className='fs-3 text-center text-danger' style={{ textDecoration: "underline", textDecorationThickness: "3px" }}>{item.subject}</p>
-                  <div className='px-3 d-flex justify-content-between'>
-                    <p className='fs-4'>{item.date}</p>
-                    <p className='fs-4'>{item.day}</p>
+      <div className='d-flex' style={{ height: '92vh' }}>
+        <div className='w-25 border-end border-secondary border-4 pt-3 px-3'>
+          <h1 className='text-center fw-bold border-bottom border-secondary border-3 pb-3'>
+            Past Meetings
+          </h1>
+          <input
+            type='text'
+            className='form-control mb-3 fs-5'
+            placeholder='Search by subject or date...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {manuallyFilteredData.length > 0 ? (
+            manuallyFilteredData.map((item, index) => (
+              <div key={index} className='border rounded-4 border-success border-4 m-2'>
+                <button
+                  className='btn btn-warning w-100 rounded-4'
+                  onClick={() => handleInfo(item)}
+                >
+                  <div>
+                    <p
+                      className='fs-3 text-center text-danger'
+                      style={{
+                        textDecoration: 'underline',
+                        textDecorationThickness: '3px',
+                      }}
+                    >
+                      {item.subject}
+                    </p>
+                    <div className='px-3 d-flex justify-content-between'>
+                      <p className='fs-4'>{item.date}</p>
+                      <p className='fs-4'>{item.day}</p>
+                    </div>
                   </div>
-                </div>
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className='text-center text-muted mt-4'>No meetings found</p>
+          )}
+        </div>
+        <div className='w-75 pt-5 mb-5 d-flex flex-column'>
+          {currentItem !== null && (
+            <div className='w-75 align-items-center justify-content-center p-5 bg-secondary-subtle mt-5 rounded-5 mx-auto'>
+              <div className='d-flex justify-content-between w-100 px-2'>
+                <p className='fs-3'>
+                  <span className='fw-bold'>Date :</span> {currentItem.date}
+                </p>
+                <p className='fs-3'>
+                  <span className='fw-bold'>Day : </span>
+                  {currentItem.day}
+                </p>
+              </div>
+              <h1
+                className='text-center fs-1 fw-bold mb-5 text-success'
+                style={{ textDecoration: 'underline', textDecorationThickness: '5px' }}
+              >
+                {currentItem.subject}
+              </h1>
+              <p className='fs-3 mt-3 ms-5 ps-5'>
+                <span className='fw-bold'>Presentees : </span>
+                {currentItem.participants}
+              </p>
+            </div>
+          )}
+          <div className='d-flex justify-content-center align-items-center my-auto'>
+            <div className='p-5 m-5 bg-secondary-subtle w-75 rounded-5 d-flex flex-column align-items-center'>
+              <p className='fs-3 text-center mt-5'>
+                Want to create a Room, Click button below
+              </p>
+              <button className='btn btn-success fs-4 rounded-3 mb-5'>
+                Create a room
               </button>
             </div>
-          ))}
-        </div>
-        {/* Provide option for creating room id here  */}
-        <div className='w-75 pt-5 mb-5'>
-          {currentItem !== null && <div className='w-75 align-items-center justify-content-center p-5 bg-secondary-subtle mt-5 rounded-4 mx-auto'>
-            <div className='d-flex justify-content-between w-100 px-2'>
-              <p className='fs-3'><span className='fw-bold'>Date :</span> {currentItem.date}</p>
-              <p className='fs-3'><span className='fw-bold'>Day : </span>{currentItem.day}</p>
-            </div>
-            <h1 className='text-center fs-1 fw-bold mb-5 text-success' style={{ textDecoration: 'underline', textDecorationThickness: '5px' }}>{currentItem.subject}</h1>
-
-            <p className='fs-3 mt-3 ms-5 ps-5'><span className='fw-bold'>Presentees : </span>{currentItem.participants}</p>
-          </div>}
-          <div className='p-5 mt-5 pt-5 bg-secondary-subtle d-flex flex-column' style={{ height: currentItem != null ? '50%' : '100%' }} >
-            <p className=' fs-3 text-center'>Want to create a Room, Click button below</p>
-            <button className='btn btn-success'>Create a room</button>
           </div>
         </div>
       </div>
+
     </div>
   )
 }
