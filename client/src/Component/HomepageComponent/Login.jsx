@@ -13,6 +13,10 @@ export default function Login() {
     e.preventDefault()
     if (roomId && username) {
       setusername(username)
+      if (username === 'admin') {
+        localStorage.setItem('mark', JSON.stringify(Array(100).fill(0)))
+      }
+      localStorage.setItem('username', JSON.stringify(username))
       navigate(`/editor/${roomId}`)
     }
   }

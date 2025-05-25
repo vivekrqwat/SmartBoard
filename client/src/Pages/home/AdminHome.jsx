@@ -16,7 +16,6 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 
 const AdminHome = () => {
-
   const data = [
     {
       subject: "Data Structures",
@@ -40,13 +39,14 @@ const AdminHome = () => {
 
   const [sortedData, setSortedData] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   function dateToNumber(dateStr) {
     const parts = dateStr.split('/');
     const day = parts[0];
     const month = parts[1];
     const year = parts[2];
-    return parseInt(year + month + day); // e.g., "20250218" as number
+    return parseInt(year + month + day);
   }
 
   useEffect(() => {
@@ -54,7 +54,6 @@ const AdminHome = () => {
     for (let i = 0; i < temp.length - 1; i++) {
       for (let j = 0; j < temp.length - i - 1; j++) {
         if (dateToNumber(temp[j].date) < dateToNumber(temp[j + 1].date)) {
-          // Swap
           const x = temp[j];
           temp[j] = temp[j + 1];
           temp[j + 1] = x;
@@ -65,11 +64,10 @@ const AdminHome = () => {
   }, []);
 
   const handleInfo = (item) => {
-    console.log(item);
     setCurrentItem(item);
   }
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // Manual search filter (case-insensitive)
   function isEqualIgnoreCase(a, b) {
     const charCodeA = a.charCodeAt(0);
     const charCodeB = b.charCodeAt(0);
@@ -121,12 +119,15 @@ const AdminHome = () => {
         display: 'flex',
         flexDirection: 'column'
     }}>
-        <Logout />
+        <Box sx={{ position: 'relative', zIndex: 1000 }}>
+            <Logout />
+        </Box>
         <Box sx={{ 
             display: 'flex', 
             flex: 1,
             p: 3,
-            gap: 3
+            gap: 3,
+            pt: 8 // Add padding to avoid overlap with Logout
         }}>
             {/* Past Meetings Section */}
             <Paper
@@ -153,7 +154,6 @@ const AdminHome = () => {
                 >
                     Past Meetings
                 </Typography>
-
                 <TextField
                     fullWidth
                     placeholder="Search by subject or date..."
@@ -177,175 +177,110 @@ const AdminHome = () => {
                         },
                     }}
                 />
-
+                <Divider sx={{ my: 2 }} />
                 <List sx={{ overflow: 'auto', flex: 1 }}>
-                    {manuallyFilteredData.length > 0 ? (
-                        manuallyFilteredData.map((item, index) => (
-                            <ListItem
-                                key={index}
-                                sx={{
-                                    mb: 2,
-                                    border: '2px solid #000000',
-                                    borderRadius: 2,
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                                    },
-                                }}
-                            >
-                                <Button
-                                    fullWidth
-                                    onClick={() => handleInfo(item)}
-                                    sx={{
-                                        textAlign: 'left',
-                                        p: 2,
-                                        color: '#000000',
-                                        '&:hover': {
-                                            backgroundColor: 'transparent',
-                                        },
-                                    }}
-                                >
-                                    <Box sx={{ width: '100%' }}>
-                                        <Typography
-                                            variant="h6"
-                                            sx={{
-                                                fontWeight: 'bold',
-                                                textDecoration: 'underline',
-                                                textDecorationThickness: '2px',
-                                                mb: 1
-                                            }}
-                                        >
-                                            {item.subject}
-                                        </Typography>
-                                        <Box sx={{ 
-                                            display: 'flex', 
-                                            justifyContent: 'space-between',
-                                            color: '#000000'
-                                        }}>
-                                            <Typography variant="body1">{item.date}</Typography>
-                                            <Typography variant="body1">{item.day}</Typography>
-                                        </Box>
-                                    </Box>
-                                </Button>
-                            </ListItem>
-                        ))
-                    ) : (
-                        <Typography
-                            sx={{
-                                textAlign: 'center',
-                                color: '#666666',
-                                mt: 4
-                            }}
-                        >
-                            No meetings found
-                        </Typography>
-                    )}
+                  {manuallyFilteredData.length > 0 ? (
+                    manuallyFilteredData.map((item, idx) => (
+                      <ListItem 
+                        button 
+                        key={idx} 
+                        onClick={() => handleInfo(item)}
+                        sx={{
+                          borderRadius: 2,
+                          mb: 1,
+                          background: currentItem === item ? '#000000' : 'transparent',
+                          color: currentItem === item ? '#fff' : '#000',
+                          '&:hover': {
+                            background: '#333333',
+                            color: '#fff',
+                          },
+                        }}
+                      >
+                        <ListItemText
+                          primary={item.subject}
+                          secondary={item.date + ' | ' + item.day}
+                          primaryTypographyProps={{ fontWeight: 'bold' }}
+                        />
+                      </ListItem>
+                    ))
+                  ) : (
+                    <ListItem>
+                      <ListItemText primary="No meetings found" />
+                    </ListItem>
+                  )}
                 </List>
             </Paper>
-
-            {/* Main Content Section */}
-            <Box sx={{ 
-                width: '75%',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 3
-            }}>
-                {/* Meeting Details */}
-                {currentItem && (
-                    <Paper
-                        elevation={3}
-                        sx={{
-                            p: 4,
-                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                            borderRadius: 2,
-                            maxWidth: '800px',
-                            mx: 'auto',
-                            width: '100%'
-                        }}
-                    >
-                        <Box sx={{ 
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            mb: 3
-                        }}>
-                            <Typography variant="h6" sx={{ color: '#000000' }}>
-                                <strong>Date:</strong> {currentItem.date}
-                            </Typography>
-                            <Typography variant="h6" sx={{ color: '#000000' }}>
-                                <strong>Day:</strong> {currentItem.day}
-                            </Typography>
-                        </Box>
-
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                                color: '#000000',
-                                mb: 4,
-                                textDecoration: 'underline',
-                                textDecorationThickness: '3px'
-                            }}
-                        >
-                            {currentItem.subject}
-                        </Typography>
-
-                        <Typography variant="h6" sx={{ color: '#000000', ml: 4 }}>
-                            <strong>Presentees:</strong> {currentItem.participants}
-                        </Typography>
-                    </Paper>
+            {/* Meeting Details and Room Creation Section */}
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 4,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  borderRadius: 2,
+                  minHeight: '300px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2
+                }}
+              >
+                {currentItem ? (
+                  <>
+                    <Typography variant="h4" sx={{ color: '#000', fontWeight: 'bold', mb: 2, textAlign: 'center', textDecoration: 'underline' }}>
+                      {currentItem.subject}
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#000', mb: 1 }}>
+                      <strong>Date:</strong> {currentItem.date}
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#000', mb: 1 }}>
+                      <strong>Day:</strong> {currentItem.day}
+                    </Typography>
+                    <Typography variant="body1" sx={{ color: '#000', mb: 1 }}>
+                      <strong>Presentees:</strong> {currentItem.participants}
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography variant="body1" sx={{ color: '#000', textAlign: 'center' }}>
+                    Select a meeting to view details.
+                  </Typography>
                 )}
-
-                {/* Create Room Section */}
-                <Paper
-                    elevation={3}
-                    sx={{
-                        p: 4,
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                        borderRadius: 2,
-                        maxWidth: '800px',
-                        mx: 'auto',
-                        width: '100%',
-                        mt: 'auto',
-                        mb: 4
-                    }}
+              </Paper>
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 4,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  borderRadius: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2
+                }}
+              >
+                <Typography variant="h5" sx={{ color: '#000', fontWeight: 'bold', mb: 2 }}>
+                  Create a Room
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{
+                    background: '#000',
+                    color: '#fff',
+                    '&:hover': {
+                      background: '#333',
+                    },
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500
+                  }}
                 >
-                    <Box sx={{ 
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 3
-                    }}>
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                color: '#000000',
-                                textAlign: 'center'
-                            }}
-                        >
-                            Want to create a Room? Click button below
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                                backgroundColor: '#000000',
-                                color: 'white',
-                                px: 4,
-                                py: 1.5,
-                                fontSize: '1.1rem',
-                                '&:hover': {
-                                    backgroundColor: '#333333',
-                                }
-                            }}
-                        >
-                            Create a room
-                        </Button>
-                    </Box>
-                </Paper>
+                  Create Room
+                </Button>
+              </Paper>
             </Box>
         </Box>
     </Box>
-  )
+  );
 }
 
-export default AdminHome
+export default AdminHome;
