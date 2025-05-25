@@ -1,60 +1,184 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAdminLogin from '../../Hooks/useAdminLogin';
+import {
+    Box,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    Link as MuiLink,
+    Stack
+} from '@mui/material';
 
 const AdminLogin = () => {
-  const [input, setInput] = useState({
-    employee_id: "",
-    password: ""
-  });
+    const { login } = useAdminLogin();
 
-  const {login} = useAdminLogin();
+    const [input, setInput] = useState({
+        employee_id: "",
+        password: ""
+    });
 
-  const handleSubmit =async (e) => {
-    e.preventDefault();
-    await login(input);
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await login(input);
+    };
 
-  return (
-    <div className='border rounded-4 p-5 m-5 w-75' style={{ backgroundColor: "rgba(230, 219, 163, 0.58)" }}>
-      <h3 className='d-flex justify-content-center fw-bold fs-2'>Admin Login</h3>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3 mt-4">
-          <label className="form-label fw-bold fs-5">Employee ID</label>
-          <input
-            type="text"
-            className="form-control"
-            value={input.employee_id}
-            onChange={(e) => setInput({ ...input, employee_id: e.target.value })}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label fw-bold fs-5">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={input.password}
-            onChange={(e) => setInput({ ...input, password: e.target.value })}
-          />
-        </div>
+    return (
+        <Paper
+            elevation={3}
+            sx={{
+                py: 5,
+                px: 5,
+                my: 5,
+                mx: 5,
+                width: '100%',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderRadius: 4,
+                maxWidth: '500px'
+            }}
+        >
+            <Typography
+                variant="h4"
+                sx={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    mb: 4,
+                    color: '#000000'
+                }}
+            >
+                Admin Login
+            </Typography>
 
-        <div className='d-flex justify-content-center'>
-          <button
-            type="submit"
-            className="btn btn-outline-dark border border-4 rounded-5 border-dark mt-4 mb-2 w-50 fs-5"
-          >
-            Login
-          </button>
-        </div>
-      </form>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Stack spacing={3}>
+                    <Box>
+                        <Typography
+                            component="label"
+                            variant="h6"
+                            sx={{ 
+                                fontWeight: 'bold', 
+                                mb: 1, 
+                                display: 'block',
+                                color: '#000000'
+                            }}
+                        >
+                            Employee ID
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            value={input.employee_id}
+                            onChange={(e) => setInput({ ...input, employee_id: e.target.value })}
+                            variant="outlined"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'white',
+                                    '&:hover fieldset': {
+                                        borderColor: '#000000',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#000000',
+                                    },
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#000000',
+                                },
+                            }}
+                        />
+                    </Box>
 
-      <Link className="btn btn-link w-100 text-dark fw-bold" to="/admin-signup">
-        Don't have an account? <span className='text-success'>Sign Up</span>
-      </Link>
-      <br />
-    </div>
-  );
+                    <Box>
+                        <Typography
+                            component="label"
+                            variant="h6"
+                            sx={{ 
+                                fontWeight: 'bold', 
+                                mb: 1, 
+                                display: 'block',
+                                color: '#000000'
+                            }}
+                        >
+                            Password
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            type="password"
+                            value={input.password}
+                            onChange={(e) => setInput({ ...input, password: e.target.value })}
+                            variant="outlined"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: 'white',
+                                    '&:hover fieldset': {
+                                        borderColor: '#000000',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#000000',
+                                    },
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#000000',
+                                },
+                            }}
+                        />
+                    </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            sx={{
+                                width: '100%',
+                                backgroundColor: '#000000',
+                                color: 'white',
+                                borderRadius: 2,
+                                fontSize: '1.1rem',
+                                textTransform: 'none',
+                                py: 1.5,
+                                '&:hover': {
+                                    backgroundColor: '#333333',
+                                }
+                            }}
+                        >
+                            Login
+                        </Button>
+                    </Box>
+                </Stack>
+            </Box>
+
+            <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <MuiLink
+                    component={Link}
+                    to="/admin-signup"
+                    sx={{
+                        color: '#000000',
+                        fontWeight: 'bold',
+                        textDecoration: 'none',
+                        '&:hover': {
+                            textDecoration: 'none',
+                            color: '#333333'
+                        }
+                    }}
+                >
+                    Don't have an account?{' '}
+                    <Typography
+                        component="span"
+                        sx={{
+                            color: '#000000',
+                            fontWeight: 'bold',
+                            textDecoration: 'underline',
+                            textUnderlineOffset: '5px',
+                            textDecorationColor: '#000000',
+                            textDecorationThickness: '2px'
+                        }}
+                    >
+                        Sign Up
+                    </Typography>
+                </MuiLink>
+            </Box>
+        </Paper>
+    );
 };
 
 export default AdminLogin;
