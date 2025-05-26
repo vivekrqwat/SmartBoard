@@ -1,39 +1,53 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../authContext/AuthContext";
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
+import { 
+    Box, 
+    Button
+} from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Logout = () => {
     const { setAuthUser, setUser } = useAuthContext();
     const navigate = useNavigate();
+    
     const handleLogout = (e) => {
         e.preventDefault();
         localStorage.removeItem("user-info");
         setAuthUser(null);
-        localStorage.removeItem("user")
-        setUser(null)
-
-        console.log("Item removed");
-        toast.success("Logout Succesfully");
+        localStorage.removeItem("user");
+        setUser(null);
+        toast.success("Logout Successfully");
         navigate("/");
     }
 
-    /* Make it dynamic. Fetch username database of admin and replace it */
-    const userName = "Rogue Trooper";
-
+    const userName = "Rogue Trooper"; // Replace with dynamic username later
     
     return (
-        <nav class="navbar p-0 m-0" style={{ height: "8vh", background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)" }}>
-            <div class="container-fluid d-flex justify-content-between me-5">
-
-
-                {/* Replace it here */}
-                <p className="fs-3 fw-bold my-auto">{userName}</p>
-
-
-
-                <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
-            </div>
-        </nav>
+        <Box 
+            sx={{ 
+                position: 'absolute',
+                top: 20,
+                right: 20,
+                zIndex: 1000
+            }}
+        >
+            <Button
+                variant="outlined"
+                onClick={handleLogout}
+                startIcon={<LogoutIcon />}
+                sx={{
+                    color: 'white',
+                    borderColor: 'white',
+                    '&:hover': {
+                        borderColor: 'white',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }}
+            >
+                Logout
+            </Button>
+        </Box>
     );
 }
 
