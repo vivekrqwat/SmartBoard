@@ -21,6 +21,8 @@ const Logout = () => {
         navigate("/");
     }
 
+    const userName = "Rogue Trooper"; // Replace with dynamic username later
+    
     return (
         <Box 
             sx={{ 

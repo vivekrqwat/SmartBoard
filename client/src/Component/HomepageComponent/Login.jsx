@@ -13,10 +13,6 @@ export default function Login() {
     e.preventDefault()
     if (roomId && username) {
       setusername(username)
-      if (username === 'admin') {
-        localStorage.setItem('mark', JSON.stringify(Array(100).fill(0)))
-      }
-      localStorage.setItem('username', JSON.stringify(username))
       navigate(`/editor/${roomId}`)
     }
   }
@@ -29,7 +25,7 @@ export default function Login() {
         flexDirection: 'column',
         alignItems: 'center'
       }}
-    >
+      >
       <Container maxWidth="sm">
         <Paper
           elevation={3}
@@ -45,37 +41,37 @@ export default function Login() {
             component="h1"
             sx={{
               mb: 3,
-              textAlign: 'center',
+            textAlign: 'center',
               color: '#000000',
               fontWeight: 500
-            }}
-          >
+          }}
+        >
             Join Room
-          </Typography>
+        </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+            display: 'flex',
+            flexDirection: 'column',
               gap: 2
-            }}
-          >
-            <TextField
+          }}
+        >
+          <TextField
               required
-              fullWidth
+            fullWidth
               label="Room ID"
               value={roomId}
               onChange={(e) => setRoomId(e.target.value)}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
                     borderColor: '#000000',
-                  },
-                  '&:hover fieldset': {
+                },
+                '&:hover fieldset': {
                     borderColor: '#333333',
-                  },
-                  '&.Mui-focused fieldset': {
+                },
+                '&.Mui-focused fieldset': {
                     borderColor: '#000000',
                   },
                 },
@@ -84,24 +80,24 @@ export default function Login() {
                 },
                 '& .MuiInputLabel-root.Mui-focused': {
                   color: '#000000',
-                },
-              }}
-            />
-            <TextField
+              },
+            }}
+          />
+          <TextField
               required
-              fullWidth
+            fullWidth
               label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
                     borderColor: '#000000',
-                  },
-                  '&:hover fieldset': {
+                },
+                '&:hover fieldset': {
                     borderColor: '#333333',
-                  },
-                  '&.Mui-focused fieldset': {
+                },
+                '&.Mui-focused fieldset': {
                     borderColor: '#000000',
                   },
                 },
@@ -110,31 +106,31 @@ export default function Login() {
                 },
                 '& .MuiInputLabel-root.Mui-focused': {
                   color: '#000000',
-                },
-              }}
-            />
-            <Button
-              type="submit"
+              },
+            }}
+          />
+          <Button
+            type="submit"
               fullWidth
-              variant="contained"
-              sx={{
+            variant="contained"
+            sx={{
                 mt: 2,
                 py: 1.5,
                 background: '#000000',
                 color: '#ffffff',
-                '&:hover': {
+              '&:hover': {
                   background: '#333333',
-                },
+              },
                 borderRadius: 2,
                 textTransform: 'none',
                 fontSize: '1rem',
                 fontWeight: 500
-              }}
-            >
-              Join Room
-            </Button>
-          </Box>
-        </Paper>
+            }}
+          >
+            Join Room
+          </Button>
+      </Box>
+    </Paper>
       </Container>
     </Box>
   )
