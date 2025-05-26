@@ -1,144 +1,137 @@
-import { Box, Button, TextField, Typography, Paper } from '@mui/material'
-import React, { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../../ThemeContex';
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Box, Button, TextField, Typography, Paper, Container } from '@mui/material'
+import { ThemeContext } from '../../ThemeContex'
 
 export default function Login() {
-  // const [roomid, setroomid] = useState('');
-  const [uname, setuname] = useState('');
-  const navigate = useNavigate();
-  const { setusername ,roomid,setroomid} = useContext(ThemeContext);
+  const navigate = useNavigate()
+  const [roomId, setRoomId] = useState('')
+  const [username, setUsername] = useState('')
+  const { setusername } = useContext(ThemeContext)
 
-  const goToDashboard = (e) => {
-    e.preventDefault();
-    setusername(uname);
-    navigate(`/editor/${roomid}`);
-  };
-  //handle join
-  const handlejoin=()=>{
-    if(uname=='admin'){
-      console.log("setstorage");
-      localStorage.setItem('mark', JSON.stringify(Array(100).fill(0)));
-      
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (roomId && username) {
+      setusername(username)
+      navigate(`/editor/${roomId}`)
     }
-    localStorage.setItem('username',JSON.stringify(uname));
   }
 
   return (
-    <Paper
-      elevation={3}
+    <Box
       sx={{
-        width: { xs: '90%', sm: '70%', md: '50%' },
-        padding: { xs: '20px', sm: '30px', md: '40px' },
-        borderRadius: '20px',
-        background: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={3}
       >
-        <Typography
-          variant="h4"
+      <Container maxWidth="sm">
+        <Paper
+          elevation={3}
           sx={{
-            fontWeight: 'bold',
-            color: '#1a237e',
-            textAlign: 'center',
-            mb: 2
+            p: { xs: 2, sm: 4 },
+            width: '100%',
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderRadius: 2
           }}
         >
-          Welcome to DELTA
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              mb: 3,
+            textAlign: 'center',
+              color: '#000000',
+              fontWeight: 500
+          }}
+        >
+            Join Room
         </Typography>
-
-        <form
-          onSubmit={goToDashboard}
-          style={{
-            width: '100%',
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '20px'
+              gap: 2
           }}
         >
           <TextField
+              required
             fullWidth
-            placeholder="Enter room ID"
-            value={roomid}
-            onChange={(e) => setroomid(e.target.value)}
+              label="Room ID"
+              value={roomId}
+              onChange={(e) => setRoomId(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
-                borderRadius: '50px',
-                backgroundColor: 'rgba(240, 233, 233, 0.8)',
                 '& fieldset': {
-                  borderColor: 'transparent',
+                    borderColor: '#000000',
                 },
                 '&:hover fieldset': {
-                  borderColor: '#4B8F17',
+                    borderColor: '#333333',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#4B8F17',
+                    borderColor: '#000000',
+                  },
                 },
+                '& .MuiInputLabel-root': {
+                  color: '#000000',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: '#000000',
               },
             }}
           />
-
           <TextField
+              required
             fullWidth
-            placeholder="Enter username"
-            value={uname}
-            onChange={(e) => setuname(e.target.value)}
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
-                borderRadius: '50px',
-                backgroundColor: 'rgba(240, 233, 233, 0.8)',
                 '& fieldset': {
-                  borderColor: 'transparent',
+                    borderColor: '#000000',
                 },
                 '&:hover fieldset': {
-                  borderColor: '#4B8F17',
+                    borderColor: '#333333',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#4B8F17',
+                    borderColor: '#000000',
+                  },
                 },
+                '& .MuiInputLabel-root': {
+                  color: '#000000',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: '#000000',
               },
             }}
           />
-
           <Button
             type="submit"
+              fullWidth
             variant="contained"
-            fullWidth
             sx={{
-              backgroundColor: '#4B8F17',
-              color: 'white',
-              borderRadius: '50px',
-              padding: '12px',
-              fontSize: '1.1rem',
-              textTransform: 'none',
+                mt: 2,
+                py: 1.5,
+                background: '#000000',
+                color: '#ffffff',
               '&:hover': {
-                backgroundColor: '#3d7312',
+                  background: '#333333',
               },
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: '1rem',
+                fontWeight: 500
             }}
-            onClick={handlejoin}
           >
             Join Room
           </Button>
-        </form>
-
-        <Typography
-          sx={{
-            fontFamily: "Roboto",
-            color: '#455a64',
-            textAlign: 'center',
-            mt: 2
-          }}
-        >
-          Don't have a room ID? Create a new room
-        </Typography>
       </Box>
     </Paper>
+      </Container>
+    </Box>
   )
 }
