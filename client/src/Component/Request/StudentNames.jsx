@@ -5,42 +5,42 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../ThemeContex';
 import { useState } from 'react';
 
-export default function StudentNames({ name ,socketref,socketid}) {
-  const[btnchange,setbtnchange]=useState(true)
-  
-  
+export default function StudentNames({ name, socketref, socketid }) {
+  const [btnchange, setbtnchange] = useState(true)
+
+
   const value = false; // Replace with actual logic to determine the state
-console.log(socketref.current.id,"studentname");
-   let target=socketid;
-   console.log(socketref,"sa")
-   const {atd,setatd,roomid}=useContext(ThemeContext);
+  console.log(socketref.current.id, "studentname");
+  let target = socketid;
+  console.log(socketref, "sa")
+  const { atd, setatd, roomid } = useContext(ThemeContext);
 
- const Handleaccess=(socketref,target,roomid)=>{
-  if(btnchange==false){
-    HandleDecline(socketref,target,roomid);
-    setbtnchange(prv=>!prv)
-    return;
-  }
-    console.log("access",socketref)
-    if(socketref.current){
-        // console.log("access")
-        console.log(target,"i")
-      socketref.current.emit("access",{target,roomid,value:true})
+  const Handleaccess = (socketref, target, roomid) => {
+    if (btnchange == false) {
+      HandleDecline(socketref, target, roomid);
+      setbtnchange(prv => !prv)
+      return;
     }
-    setbtnchange(prv=>!prv)
-    
+    console.log("access", socketref)
+    if (socketref.current) {
+      // console.log("access")
+      console.log(target, "i")
+      socketref.current.emit("access", { target, roomid, value: true })
+    }
+    setbtnchange(prv => !prv)
+
 
   }
 
- const HandleDecline=()=>{
-   
-    
-    if(socketref.current){
-        console.log("access")
-      socketref.current.emit("access",{target,roomid,value:false})
+  const HandleDecline = () => {
+
+
+    if (socketref.current) {
+      console.log("access")
+      socketref.current.emit("access", { target, roomid, value: false })
 
     }
-     setatd(atd.filter(i=>i.name!=i.name));
+    setatd(atd.filter(i => i.name != i.name));
 
   }
 
@@ -65,24 +65,24 @@ console.log(socketref.current.id,"studentname");
       }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        
-        <Box 
-         sx={{
-            width:"50%",
-            overflow:"hidden"
-        }}  
+
+        <Box
+          sx={{
+            width: "50%",
+            overflow: "hidden"
+          }}
         >
           <Typography fontSize={25}
-       
-        >{name}</Typography>
-         
+
+          >{name}</Typography>
+
         </Box>
         {value ? (
           <BackHandIcon sx={{ color: '#FFD7C2', fontSize: 40 }} />
         ) : (
           <Button
             variant='contained'
-        
+
             sx={{
               height: '50px',
               minHeight: '50px',
@@ -91,17 +91,17 @@ console.log(socketref.current.id,"studentname");
               fontSize: '0.6rem',
               padding: '4px 8px',
             }}
-            onClick={()=>Handleaccess(socketref,target,roomid)}
+            onClick={() => Handleaccess(socketref, target, roomid)}
           >
-            {btnchange?"Give Access":"denie"}
+            {btnchange ? "Give Access" : "denie"}
           </Button>
         )}
       </Box>
-       {!value && (
-            <Typography variant="body2" color="textSecondary">
-              is present in class
-            </Typography>
-          )}
+      {!value && (
+        <Typography variant="body2" color="textSecondary">
+          is present in class
+        </Typography>
+      )}
 
       {value && (
         <Box width="100%" mt={1}>

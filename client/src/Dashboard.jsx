@@ -10,18 +10,14 @@ import Attendance from './Component/form/Attendance';
 import { ToastContainer, toast } from 'react-toastify';
 import Request from './Component/Request/Requset';
 import { Atd_popUp } from './Component/Atd_pop_up/Atd_popUp';
-import { useNavigate } from 'react-router-dom';
 
 
 export default function Dashboard() {
+ 
   const socketref=useRef(null);
   const canvasRef = useRef(null);
-  const[access,setacess]=useState(false);
-       const navigate = useNavigate();
-   console.log("dashboard value",access)
-
     const[message,setmessage]=useState('');
-    const{pen,penColor,username,setatd,atd,mark,setmark,roomid,student,setstudent}=useContext(ThemeContext);
+    const{pen,penColor,username,setatd,atd,mark,setmark,roomid}=useContext(ThemeContext);
     const boxstyle={
         display:"flex",
         justifyContent:"space-evenly",
@@ -34,9 +30,8 @@ export default function Dashboard() {
  
     console.log(username)
     const handleChange = async () => {
+      if (!canvasRef.current || !socketref.current||username!='admin') return;
     
-      if (!canvasRef.current || !socketref.current||(username!='admin'&&!access)) return;
-      console.log("change")
       const paths = await canvasRef.current.exportPaths();
       socketref.current.emit('drawing', {
         roomid: roomid,
@@ -73,10 +68,9 @@ const changeMark=(number)=>{
       const init=async()=>{
         socketref.current=await initsocket();
         socketref.current.emit('join',{
-          id:roomid,
-          userename:username
+          id:roomid
         })
-        socketref.current.emit('join', { roomid: roomid ,username:username});
+        socketref.current.emit('join', { roomid: roomid });
         socketref.current.on("r-drawing",(data)=>{
         // console.log("data",data);
         // console.log("data2",canvasRef.current);
@@ -87,38 +81,6 @@ const changeMark=(number)=>{
            
           }
         })
-        //on join of student
-         socketref.current.on('student', ({ id, username }) => {
-  if (!id || !username) return;
-
-  console.log(id, username, "student");
-
-  setstudent(prev => {
-    // Check for duplicates
-    const alreadyExists = prev.some(student => student.id === id && student.username === username);
-    if (alreadyExists) return prev;
-
-    const updated = [...prev, { id, username }];
-    
-    // Save to localStorage
-
-    return updated;
-  });
-});
-
-//disconnect of socket
-socketref.current.on('disconnect-del',({username,id})=>{
-    if (!id) return;
-
-  setstudent(prev =>
-    prev.filter((i) => i.id && i.id !== id)
-  );
-  console.log("after disconnect",student);
-})
-
-
-
-
 
         //attendance message
         socketref.current.on('r-attendance',({message})=>{
@@ -130,49 +92,18 @@ socketref.current.on('disconnect-del',({username,id})=>{
             )
           }
         })
-       
-
 
 
         //recv  req
-        socketref.current.on('r-sendreq',({message,socketid})=>{
+        socketref.current.on('r-sendreq',({message})=>{
           console.log('bhai  ka nam',message)
-          setatd(prv=>[...prv,{name:message,socketid:socketid}]);
-
-          toast(
- username=='admin'&& <Request name={'studnet'} socketid={socketid} socketref={socketref} />,
-  {
-    position: "bottom-left",
-    autoClose: 5000,       // 5 seconds = 5000 ms
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  }
-); 
-
-
+          setatd(prv=>[...prv,message]);
         })
-
-
-
-          // take access
-        socketref.current.on("access-g",({value})=>{
-          console.log(value,"hello");
-          setacess(value);
-        })
-
-
-
         //recv mark
         socketref.current.on('r-mark', ({ rollnumber }) => {
           console.log("socket roll", rollnumber);
           changeMark(rollnumber);
         });
-        //del student from local storage
-       
-     
       }
       init();
 
@@ -199,13 +130,15 @@ socketref.current.on('disconnect-del',({username,id})=>{
     }
    const sendRequest=(e)=>{
     if(socketref.current){
-      console.log("socketid",socketref.current.id)
-      socketref.current.emit('sendreq',{message:username
-        ,roomid:roomid,
-      socketid:socketref.current.id})
+      socketref.current.emit('sendreq',{message:username,roomid:roomid})
     }
-  }
-  
+   }
+   //senMail
+   const sendMail=(message)=>{
+
+   }
+
+  //
 
    //leave
    const leave=()=>{
@@ -218,11 +151,10 @@ socketref.current.on('disconnect-del',({username,id})=>{
        i>=2?message+=`${key},`:"";
       })
 
-
       }
    
       
-      toast(<Atd_popUp message={message||'None'} socketref={socketref}></Atd_popUp>, {
+      toast(<Atd_popUp message={message||'None'}></Atd_popUp>, {
       position: 'top-right',
       autoClose: false, 
       closeOnClick: false,
@@ -232,51 +164,28 @@ socketref.current.on('disconnect-del',({username,id})=>{
      
       
     }
-  else {
-   
-const updatearray=student.filter((i)=>{i.name!=username});
-setstudent(updatearray);
- socketref.current.emit('leave',{roomid})
- 
-localStorage.removeItem('username')
-navigate('/');
-}
   
    }
          useEffect(() => {
            console.log("Updated atd:", message);
          }, [message]);
   
-console.log(student)
-
   return (
-    
     <Box width={"100%"} 
     height={"100vh"}
     border={"2px solid red"}
     >
-         <ReactSketchCanvas
-  ref={canvasRef}
-  width="100%"
-  height="80%"
-  strokeWidth={pen}
-  strokeColor={penColor}
-  canvasColor="#D9D9D9"
-  withTimestamp={true}
-  onStroke={(username === "admin" || access === true) ? handleChange : undefined}
-  allowOnlyPointerType={username === 'admin' ? 'all' : undefined}
-  style={{
-    pointerEvents: (username === "admin" || access === true) ? 'auto' : 'none',
-    opacity: (username === "admin" || access === true) ? 1 : 0.5,
-    border: '2px solid #ccc',
-    borderRadius: '8px'
-  }}
-/>
-{
-  student.map((i)=>{
-    console.log(i.id,i.username);
-  })
-}
+          <ReactSketchCanvas
+         ref={canvasRef}
+        width="100%"
+        height="80%"
+        strokeWidth={pen}
+        strokeColor={penColor}
+        canvasColor="#D9D9D9"
+        withTimestamp={true}
+        onStroke={username=="admin"?handleChange:undefined}
+        allowOnlyPointerType={username=='admin'&&'all'}
+      />
 
 
       <Box style={boxstyle} width={"100%"} mt="30px" height={"20%"}>
@@ -296,7 +205,7 @@ console.log(student)
 
 
        
-       { username=="admin"&&<Drawer1 socketref={socketref}></Drawer1>}
+       { username=="admin"&&<Drawer1></Drawer1>}
         {/* box for icon button */}
           {/* <Box style={boxstyle} width={"30%"}>
           <CreateIcon></CreateIcon>
@@ -308,15 +217,12 @@ console.log(student)
        {username=="admin"&&<Tools></Tools>} 
       {/* box for button */}
       <Box sx={boxstyle} width={"50%"}>
-
-
-   {  
-  //  username=="admin"&& <Button variant='contained' sx={{background:"#4761DF",
-  //       color:"white",
+   {  username=="admin"&& <Button variant='contained' sx={{background:"#4761DF",
+        color:"white",
         
-  //       fontSize:"0.9rem"
+        fontSize:"0.9rem"
         
-  //      }}>go_to code_collab</Button>
+       }}>go_to code_collab</Button>
       }
        
 

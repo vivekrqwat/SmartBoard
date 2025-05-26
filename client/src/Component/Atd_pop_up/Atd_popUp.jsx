@@ -1,20 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {  useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../../ThemeContex';
 
-export const Atd_popUp = ({ message,socketref }) => {
+export const Atd_popUp = ({ message }) => {
      const navigate = useNavigate();
-         const{roomid}=useContext(ThemeContext);
-     
   const handleCopy = () => {
     navigator.clipboard.writeText(message);
-     
        localStorage.removeItem('mark');
-        localStorage.removeItem('students');
-        localStorage.removeItem('username');
-       
-
-        
     navigate('/');
     
    

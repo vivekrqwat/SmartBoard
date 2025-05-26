@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Logout from '../../Component/Logout'
-import Login from '../../Component/HomepageComponent/Login';
 
 const AdminHome = () => {
 
@@ -169,7 +168,7 @@ const AdminHome = () => {
               </p>
             </div>
           )}
-          {/* <div className='d-flex justify-content-center align-items-center my-auto'>
+          <div className='d-flex justify-content-center align-items-center my-auto'>
             <div className='p-5 m-5 bg-secondary-subtle w-75 rounded-5 d-flex flex-column align-items-center'>
               <p className='fs-3 text-center mt-5'>
                 Want to create a Room, Click button below
@@ -178,11 +177,7 @@ const AdminHome = () => {
                 Create a room
               </button>
             </div>
-          </div> */}
-
-            <Login></Login>
-
-
+          </div>
         </div>
       </div>
 

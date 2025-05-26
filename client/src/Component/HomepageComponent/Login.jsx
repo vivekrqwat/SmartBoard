@@ -17,11 +17,9 @@ export default function Login() {
   //handle join
   const handlejoin=()=>{
     if(uname=='admin'){
-      console.log("setstorage");
+      console.log("setstoreage");
       localStorage.setItem('mark', JSON.stringify(Array(100).fill(0)));
-      
     }
-    localStorage.setItem('username',JSON.stringify(uname));
   }
 
   return (

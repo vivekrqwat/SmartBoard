@@ -18,7 +18,6 @@ import { Toaster } from 'react-hot-toast';
 import User from './Pages/User';
 import AdminSignupHome from './Pages/signup/AdminSignupHome';
 import UserSignupHome from './Pages/signup/UserSignupHome';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const {authUser} = useAuthContext();
