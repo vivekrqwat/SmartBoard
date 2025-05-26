@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { toast } from "react-hot-toast";
 import { useAuthContext } from "../authContext/AuthContext.jsx";
+import { ThemeContext } from '@emotion/react';
 
 const useUserLogin = () => {
     const { setAuthUser , setUser} = useAuthContext();
-
+    const {username,setusername}=useContext(ThemeContext);
     const login = async (input) => {
         const isValid = validateInput(input);
         if (!isValid) {
@@ -23,6 +24,7 @@ const useUserLogin = () => {
             const data = await res.json();
 
             if (!res.ok || data.error) {
+                setusername(data.fullname);
                 toast.error(data.error || "Login failed. Please try again.");
                 return;
             }
