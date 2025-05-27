@@ -26,26 +26,34 @@ const Logout = () => {
     return (
         <Box 
             sx={{ 
-                position: 'absolute',
-                top: 20,
-                right: 20,
-                zIndex: 1000
+                position: 'fixed',
+                top: 32,
+                right: { xs: 20, md: 40 },
+                zIndex: 10,
+                display: 'flex'
             }}
         >
             <Button
                 variant="outlined"
                 onClick={handleLogout}
-                startIcon={<LogoutIcon />}
                 sx={{
-                    color: 'white',
-                    borderColor: 'white',
-                    '&:hover': {
-                        borderColor: 'white',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                    borderRadius: 2,
+                    minWidth: 'auto',
+                    width: { xs: 32, md: 40 },
+                    height: { xs: 32, md: 40 },
+                    p: 0,
+                    borderColor: '#7C3AED',
+                    color: '#7C3AED',
+                    '&:hover': { 
+                        borderColor: '#5B21B6', 
+                        background: '#F3F0FF' 
+                    },
+                    '& .MuiSvgIcon-root': {
+                        fontSize: { xs: 18, md: 24 }
                     }
                 }}
             >
-                Logout
+                <LogoutIcon />
             </Button>
         </Box>
     );
