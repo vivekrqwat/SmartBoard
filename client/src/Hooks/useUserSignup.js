@@ -13,12 +13,19 @@ const useUserSignup = () => {
         }
 
         try {
+            // Transform the input to match backend expectations
+            const transformedInput = {
+                ...input,
+                fullname: input.fullName,
+            };
+            delete transformedInput.fullName;
+
             const res = await fetch("http://localhost:5000/auth/user/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(input) 
+                body: JSON.stringify(transformedInput) 
             });
 
             const data = await res.json();
@@ -49,9 +56,9 @@ const useUserSignup = () => {
 export default useUserSignup
 
 const validateInput = (input) => {
-    const { email, fullname, university_rollno, class_rollno, password, confirmPassword } = input;
+    const { email, fullName, university_rollno, class_rollno, password, confirmPassword } = input;
 
-    if (!email || !fullname || !university_rollno || !class_rollno || !password || !confirmPassword) {
+    if (!email || !fullName || !university_rollno || !class_rollno || !password || !confirmPassword) {
         toast.error("Please fill in all fields.");
         return false;
     }
