@@ -1,183 +1,251 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useUserLogin from '../../Hooks/useUserLogin';
 import {
     Box,
-    Paper,
     Typography,
     TextField,
     Button,
-    Link as MuiLink,
-    Stack
+    Checkbox,
+    FormControlLabel,
+    Stack,
+    Link as MuiLink
 } from '@mui/material';
 
 const UserLogin = () => {
+    const [input, setInput] = useState({ university_rollno: '', password: '' });
+    const [remember, setRemember] = useState(false);
+    const navigate = useNavigate();
     const { login } = useUserLogin();
-
-    const [input, setInput] = useState({
-        university_rollno: "",
-        password: ""
-    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(input);
+        const result = await login(input);
+        // If login is successful, redirect to room join page
+        if (result !== false) {
+            navigate('/'); // Redirect to home (room join page)
+        }
     };
 
     return (
-        <Paper
-            elevation={3}
-            sx={{
-                py: 5,
-                px: 5,
-                my: 5,
-                mx: 5,
-                width: '100%',
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                borderRadius: 4,
-                maxWidth: '500px'
-            }}
-        >
-            <Typography
-                variant="h4"
-                sx={{
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    mb: 4,
-                    color: '#000000'
-                }}
-            >
-                User Login
-            </Typography>
-
-            <Box component="form" onSubmit={handleSubmit}>
-                <Stack spacing={3}>
-                    <Box>
-                        <Typography
-                            component="label"
-                            variant="h6"
-                            sx={{ 
-                                fontWeight: 'bold', 
-                                mb: 1, 
-                                display: 'block',
-                                color: '#000000'
-                            }}
-                        >
-                            University Roll Number
+        <Box sx={{ minHeight: '100vh', height: '100vh', width: '100vw', display: 'flex', background: '#F7F8FA', overflow: 'hidden', position: 'relative' }}>
+            {/* Top Left Branding */}
+            <Box sx={{
+                position: 'fixed',
+                top: 32,
+                left: 40,
+                zIndex: 10,
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+            }}>
+                <Typography variant="h4" sx={{ fontWeight: 700, color: '#111', letterSpacing: 0.5, fontSize: { xs: 22, sm: 26 } }}>
+                    Delta
+                </Typography>
+            </Box>
+            {/* Mobile Header */}
+            <Box sx={{
+                position: 'fixed',
+                top: 32,
+                left: 0,
+                right: 0,
+                zIndex: 10,
+                display: { xs: 'flex', md: 'none' },
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Typography variant="h4" sx={{ fontWeight: 700, color: '#111', letterSpacing: 0.5, fontSize: { xs: 22, sm: 26 } }}>
+                    Delta
+                </Typography>
+            </Box>
+            {/* Bottom Left Copyright */}
+            <Box sx={{
+                position: 'fixed',
+                bottom: 32,
+                left: 40,
+                zIndex: 10,
+                display: { xs: 'none', md: 'block' }
+            }}>
+                <Typography variant="body2" sx={{ color: '#888' }}>
+                    © Delta Smartboard 2025
+                </Typography>
+            </Box>
+            {/* Left Side */}
+            <Box sx={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                px: { xs: 2, md: 8 },
+                py: 0,
+                background: '#fff',
+                minWidth: 0,
+                position: 'relative',
+                height: '100vh',
+            }}>
+                {/* Form */}
+                <Box sx={{ maxWidth: 400, width: '100%', mx: 'auto', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', my: { xs: 4, sm: 8 }, px: { xs: 0.5, sm: 0 } }}>
+                    {/* Header and Toggle Button Row */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                        <Typography variant="h4" sx={{ fontWeight: 700, color: '#111', fontSize: { xs: 22, sm: 26 } }}>
+                            Welcome back
                         </Typography>
-                        <TextField
-                            fullWidth
-                            value={input.university_rollno}
-                            onChange={(e) => setInput({ ...input, university_rollno: e.target.value })}
-                            variant="outlined"
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    backgroundColor: 'white',
-                                    '&:hover fieldset': {
-                                        borderColor: '#000000',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#000000',
-                                    },
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: '#000000',
-                                },
-                            }}
-                        />
-                    </Box>
-
-                    <Box>
-                        <Typography
-                            component="label"
-                            variant="h6"
-                            sx={{ 
-                                fontWeight: 'bold', 
-                                mb: 1, 
-                                display: 'block',
-                                color: '#000000'
-                            }}
-                        >
-                            Password
-                        </Typography>
-                        <TextField
-                            fullWidth
-                            type="password"
-                            value={input.password}
-                            onChange={(e) => setInput({ ...input, password: e.target.value })}
-                            variant="outlined"
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    backgroundColor: 'white',
-                                    '&:hover fieldset': {
-                                        borderColor: '#000000',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#000000',
-                                    },
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: '#000000',
-                                },
-                            }}
-                        />
-                    </Box>
-
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                         <Button
-                            type="submit"
-                            variant="contained"
-                            size="large"
+                            variant="outlined"
+                            size="small"
                             sx={{
-                                width: '100%',
-                                backgroundColor: '#000000',
-                                color: 'white',
                                 borderRadius: 2,
-                                fontSize: '1.1rem',
+                                fontWeight: 600,
                                 textTransform: 'none',
-                                py: 1.5,
-                                '&:hover': {
-                                    backgroundColor: '#333333',
-                                }
+                                borderColor: '#7C3AED',
+                                color: '#7C3AED',
+                                '&:hover': { borderColor: '#5B21B6', background: '#F3F0FF' }
                             }}
+                            onClick={() => navigate('/admin-login')}
                         >
-                            Login
+                            Admin Login
                         </Button>
                     </Box>
-                </Stack>
+                    <Typography variant="body1" sx={{ color: '#666', mb: 4, fontSize: { xs: 13, sm: 15 } }}>
+                        Welcome back! Please enter your details.
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} autoComplete="off">
+                        <Stack spacing={2}>
+                            <Box>
+                                <Typography component="label" variant="body2" sx={{ fontWeight: 500, mb: 0.5, color: '#222', fontSize: { xs: 12, sm: 13 } }}>
+                                    University Roll Number
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    value={input.university_rollno}
+                                    onChange={e => setInput({ ...input, university_rollno: e.target.value })}
+                                    variant="outlined"
+                                    size="small"
+                                    placeholder="Enter your roll number"
+                                    sx={{
+                                        mt: 0.5,
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: 2,
+                                            backgroundColor: '#F9FAFB',
+                                            fontSize: { xs: 13, sm: 15 }
+                                        }
+                                    }}
+                                />
+                            </Box>
+                            <Box>
+                                <Typography component="label" variant="body2" sx={{ fontWeight: 500, mb: 0.5, color: '#222', fontSize: { xs: 12, sm: 13 } }}>
+                                    Password
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    type="password"
+                                    value={input.password}
+                                    onChange={e => setInput({ ...input, password: e.target.value })}
+                                    variant="outlined"
+                                    size="small"
+                                    placeholder="Enter your password"
+                                    sx={{
+                                        mt: 0.5,
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: 2,
+                                            backgroundColor: '#F9FAFB',
+                                            fontSize: { xs: 13, sm: 15 }
+                                        }
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: -1 }}>
+                                <FormControlLabel
+                                    control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} sx={{ p: 0.5 }} />}
+                                    label={<Typography variant="body2" sx={{ color: '#222', fontSize: { xs: 12, sm: 13 } }}>Remember for 30 days</Typography>}
+                                    sx={{ ml: 0 }}
+                                />
+                            </Box>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                size="large"
+                                sx={{
+                                    width: '100%',
+                                    backgroundColor: '#7C3AED',
+                                    color: 'white',
+                                    borderRadius: 2,
+                                    fontWeight: 600,
+                                    fontSize: 15,
+                                    textTransform: 'none',
+                                    py: 1.1,
+                                    boxShadow: 0,
+                                    '&:hover': { backgroundColor: '#5B21B6' }
+                                }}
+                            >
+                                Log in
+                            </Button>
+                        </Stack>
+                    </Box>
+                    <Box sx={{ mt: 1.5, textAlign: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#888', fontSize: { xs: 12, sm: 14 } }}>
+                            Don't have an account?{' '}
+                            <MuiLink
+                                component={Link}
+                                to="/user-signup"
+                                sx={{ color: '#7C3AED', fontWeight: 600, textDecoration: 'none', ml: 0.5, '&:hover': { textDecoration: 'underline' } }}
+                            >
+                                Sign up
+                            </MuiLink>
+                        </Typography>
+                    </Box>
+                </Box>
             </Box>
-
-            <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <MuiLink
-                    component={Link}
-                    to="/user-signup"
-                    sx={{
-                        color: '#000000',
-                        fontWeight: 'bold',
-                        textDecoration: 'none',
-                        '&:hover': {
-                            textDecoration: 'none',
-                            color: '#333333'
-                        }
-                    }}
-                >
-                    Don't have an account?{' '}
+            {/* Right Side - Blurred Square with Delta */}
+            <Box sx={{
+                flex: 1,
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#F7F8FA',
+                position: 'relative',
+                overflow: 'hidden',
+                height: '100vh',
+            }}>
+                <Box sx={{
+                    width: 320,
+                    height: 320,
+                    background: 'rgba(124, 58, 237, 0.15)',
+                    borderRadius: 3,
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 32px 0 rgba(124,58,237,0.18)',
+                    overflow: 'hidden',
+                    filter: 'blur(0.5px)'
+                }}>
                     <Typography
-                        component="span"
+                        variant="h1"
                         sx={{
-                            color: '#000000',
-                            fontWeight: 'bold',
-                            textDecoration: 'underline',
-                            textUnderlineOffset: '5px',
-                            textDecorationColor: '#000000',
-                            textDecorationThickness: '2px'
+                            color: 'rgba(124, 58, 237, 0.5)',
+                            fontWeight: 800,
+                            fontSize: '5rem',
+                            zIndex: 2,
+                            filter: 'blur(2px)'
                         }}
                     >
-                        Sign Up
+                        Delta
                     </Typography>
-                </MuiLink>
+                    {/* Half-blur overlay */}
+                    <Box sx={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '50%',
+                        width: '100%',
+                        height: '50%',
+                        background: 'rgba(247,248,250,0.7)',
+                        backdropFilter: 'blur(8px)',
+                        zIndex: 3
+                    }} />
+                </Box>
             </Box>
-        </Paper>
+        </Box>
     );
 };
 

@@ -12,12 +12,19 @@ const useAdminSignup = () => {
         }
 
         try {
+            // Transform the input to match backend expectations
+            const transformedInput = {
+                ...input,
+                fullname: input.fullName,
+            };
+            delete transformedInput.fullName;
+
             const res = await fetch("http://localhost:5000/auth/admin/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(input) 
+                body: JSON.stringify(transformedInput) 
             });
 
             const data = await res.json();
@@ -49,9 +56,9 @@ export default useAdminSignup;
 
 // Helper validation function
 const validateInput = (input) => {
-    const { email, fullname, employee_id, password, confirmPassword } = input;
+    const { email, fullName, employee_id, password, confirmPassword } = input;
 
-    if (!email || !fullname || !employee_id || !password || !confirmPassword) {
+    if (!email || !fullName || !employee_id || !password || !confirmPassword) {
         toast.error("Please fill in all fields.");
         return false;
     }
