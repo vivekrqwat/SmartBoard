@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {toast} from "react-hot-toast"
 import { useAuthContext } from '../authContext/AuthContext';
+import { ThemeContext } from '../ThemeContex';
 
 
 const useAdminLogin = () => {
 
     const {setAuthUser, setUser} = useAuthContext();
-
+    const{username,setusername}=useContext(ThemeContext)
    
     const login = async (input) => {
         const isValid = validateInput(input);
@@ -26,6 +27,7 @@ const useAdminLogin = () => {
             const data = await res.json();
 
             if (!res.ok || data.error) {
+                
                 toast.error(data.error || "Login failed. Please try again.");
                 return;
             }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Logout from '../../Component/Logout'
 import {
     Box,
@@ -14,6 +14,9 @@ import {
     IconButton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import useUserLogin from '../../Hooks/useUserLogin';
+import { ThemeContext } from '../../ThemeContex';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHome = () => {
 
@@ -67,6 +70,19 @@ const AdminHome = () => {
   const handleInfo = (item) => {
     console.log(item);
     setCurrentItem(item);
+  }
+  //
+    const navigate = useNavigate()
+    const {user}=useUserLogin()
+    const [roomId, setRoomId] = useState('')
+      const { setusername } = useContext(ThemeContext)
+    const handleSubmit = (e) => {
+    e.preventDefault()
+  console.log('clicked  ',roomId,user.fullname)
+    if (roomId && user.newAdmin.fullname) {
+      setusername('admin')
+      navigate(`/editor/${roomId}`)
+    }
   }
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -153,6 +169,7 @@ const AdminHome = () => {
                 >
             Past Meetings
                 </Typography>
+
 
                 <TextField
                     fullWidth
@@ -309,6 +326,24 @@ const AdminHome = () => {
                         mb: 4
                     }}
                 >
+                     {/* viv change */}
+<form action=""  onSubmit={handleSubmit}>
+ <TextField
+                  fullWidth
+                  value={roomId}
+                  onChange={(e) => setRoomId(e.target.value)}
+                  variant="outlined"
+                  size="small"
+                  placeholder="Enter room ID"
+                  sx={{
+                    mt: 0.2,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      fontSize: { xs: 13, sm: 15 }
+                    }
+                  }}
+                />                    {/* viv change */}
                     <Box sx={{ 
                         display: 'flex',
                         flexDirection: 'column',
@@ -337,10 +372,13 @@ const AdminHome = () => {
                                     backgroundColor: '#333333',
                                 }
                             }}
+                           type='submi'
                         >
                 Create a room
                         </Button>
+                       
                     </Box>
+                     </form>
                 </Paper>
             </Box>
         </Box>

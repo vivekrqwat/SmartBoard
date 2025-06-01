@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { toast } from "react-hot-toast";
 import { useAuthContext } from "../authContext/AuthContext.jsx";
-import { ThemeContext } from '@emotion/react';
+import { ThemeContext } from '../ThemeContex.jsx';
+
 
 const useUserLogin = () => {
-    const { setAuthUser , setUser} = useAuthContext();
+    const { user,setAuthUser , setUser} = useAuthContext();
     const {username,setusername}=useContext(ThemeContext);
     const login = async (input) => {
         const isValid = validateInput(input);
@@ -24,7 +25,7 @@ const useUserLogin = () => {
             const data = await res.json();
 
             if (!res.ok || data.error) {
-                setusername(data.fullname);
+           
                 toast.error(data.error || "Login failed. Please try again.");
                 return;
             }
@@ -35,7 +36,9 @@ const useUserLogin = () => {
 
            localStorage.setItem("user", JSON.stringify(data));
             setUser(data);
-
+            console.log(user)
+            setusername(data.fullname);
+                console.log('before login',username)
             toast.success("Login successful!");
             console.log(data);
 
@@ -44,8 +47,10 @@ const useUserLogin = () => {
             console.error(error);
         }
     };
-
-    return { login };
+    // let value = localStorage.getItem('user');
+    // setUser(value);
+console.log('user',user)
+    return { login,user };
 }
 
 export default useUserLogin

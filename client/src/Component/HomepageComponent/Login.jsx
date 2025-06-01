@@ -2,17 +2,24 @@ import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, TextField, Typography, Stack } from '@mui/material'
 import { ThemeContext } from '../../ThemeContex'
+import { AuthContext } from '../../authContext/AuthContext'
+import useUserSignup from '../../Hooks/useUserSignup'
+import useUserLogin from '../../Hooks/useUserLogin'
+
 
 export default function Login() {
   const navigate = useNavigate()
   const [roomId, setRoomId] = useState('')
   const [username, setUsername] = useState('')
   const { setusername } = useContext(ThemeContext)
-
+  const {user}=useUserLogin()
+  console.log(user,"user from rohit");
+console.log(user.fullname,"after login")
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (roomId && username) {
-      setusername(username)
+  
+    if (roomId && user.fullname) {
+      setusername(user.fullname)
       navigate(`/editor/${roomId}`)
     }
   }
@@ -20,6 +27,7 @@ export default function Login() {
   return (
     <Box sx={{ minHeight: '100vh', height: '100vh', width: '100vw', display: 'flex', background: '#F7F8FA', overflow: 'hidden', position: 'relative' }}>
       {/* Top Left Branding */}
+      
       <Box sx={{
         position: 'fixed',
         top: 32,
@@ -109,7 +117,7 @@ export default function Login() {
                 <Typography component="label" variant="body2" sx={{ fontWeight: 500, mb: 0.2, color: '#222', fontSize: { xs: 12, sm: 13 } }}>
                   Username
                 </Typography>
-                <TextField
+                {/* <TextField
                   fullWidth
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -124,7 +132,7 @@ export default function Login() {
                       fontSize: { xs: 13, sm: 15 }
                     }
                   }}
-                />
+                /> */}
               </Box>
               <Button
                 type="submit"
