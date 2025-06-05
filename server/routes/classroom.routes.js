@@ -2,12 +2,12 @@
 import express from 'express';
 const router = express.Router();
 
-import { create, join } from '../controllers/classroom.controller.js';
+import { create, getClassroom } from '../controllers/classroom.controller.js';
 
 
-router.post('/api/createroom/:id', create);
+router.post('/api/createroom', create);
 
-router.post('/api/joinroom/:id', join);
+router.post('/api/getclassroom', getClassroom);
 
 
 export default router;
