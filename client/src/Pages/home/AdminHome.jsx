@@ -76,10 +76,11 @@ const AdminHome = () => {
     const {user}=useUserLogin()
     const [roomId, setRoomId] = useState('')
       const { setusername } = useContext(ThemeContext)
+      console.log(user,"users",user.fullname);
     const handleSubmit = (e) => {
     e.preventDefault()
   console.log('clicked  ',roomId,user.fullname)
-    if (roomId && user.newAdmin.fullname) {
+    if (roomId && user.fullname) {
       setusername('admin')
       navigate(`/editor/${roomId}`)
     }
