@@ -79,7 +79,7 @@ const AdminHome = () => {
     const handleSubmit = (e) => {
     e.preventDefault()
   console.log('clicked  ',roomId,user.fullname)
-    if (roomId && user.newAdmin.fullname) {
+    if (roomId && user.fullname) {
       setusername('admin')
       navigate(`/editor/${roomId}`)
     }
