@@ -17,9 +17,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import useUserLogin from '../../Hooks/useUserLogin';
 import { ThemeContext } from '../../ThemeContex';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+
 
 const AdminHome = () => {
-
+const{subject,setsubject,setroomid}=useContext(ThemeContext);
   const data = [
     {
       subject: "Data Structures",
@@ -78,13 +81,36 @@ const AdminHome = () => {
       const { setusername } = useContext(ThemeContext)
     const handleSubmit = (e) => {
     e.preventDefault()
-  console.log('clicked  ',roomId,user.fullname)
+
+
     if (roomId && user.fullname) {
       setusername('admin')
+    
       navigate(`/editor/${roomId}`)
     }
   }
+async function getClassroomsForAdmin() {
+  try {
+    const admin_id = user.employee_id;
+    console.log("Admin ID:", admin_id);
 
+    const res = await axios.post(
+      "http://localhost:5000/classroom/api/getclassroom",
+      { admin_id }  // ✅ send as JSON
+    );
+
+    // Extract server response
+    const classrooms = res.data.classrooms;
+    console.log("Classrooms received:", classrooms);
+
+    // Now use 'classrooms'—e.g., display, set state, etc.
+  } catch (e) {
+    console.error("Error in fetching classrooms:", e);
+    toast("Something went wrong: " + (e.response?.data?.message || e.message));
+  }
+}
+getClassroomsForAdmin()
+;
   const [searchTerm, setSearchTerm] = useState('');
   function isEqualIgnoreCase(a, b) {
     const charCodeA = a.charCodeAt(0);
@@ -343,7 +369,27 @@ const AdminHome = () => {
                       fontSize: { xs: 13, sm: 15 }
                     }
                   }}
-                />                    {/* viv change */}
+                />  
+
+ <TextField
+                  fullWidth
+                  value={subject}
+                  onChange={(e) => setsubject(e.target.value)}
+                  variant="outlined"
+                  size="small"
+                  placeholder="Enter Subject"
+                  sx={{
+                    mt: 0.2,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      fontSize: { xs: 13, sm: 15 }
+                    }
+                  }}
+                />  
+
+
+                                  {/* viv change */}
                     <Box sx={{ 
                         display: 'flex',
                         flexDirection: 'column',

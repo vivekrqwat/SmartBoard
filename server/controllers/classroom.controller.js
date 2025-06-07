@@ -4,9 +4,9 @@ export const create = async (req, res) => {
 
     try{
         // const classroom_id = req.params.id;
-        const { classroom_id, subject, admin_id, participants } = req.body;
-
-        if(!classroom_id ||!admin_id || !participants){
+        const { classroom_id, subject, admin_id } = req.body;
+console.log("classroomid",classroom_id,"subject ",subject," adminid",admin_id);
+        if(!classroom_id ||!admin_id ){
             return res.status(400).json({message: 'Please provide all required fields'});
         }
 
@@ -19,9 +19,9 @@ export const create = async (req, res) => {
             classroom_id,
             subject,
             admin_id,
-            participants: participants.map(participant => participant._id) //  participants is an array of user objects
+            participants: participants.map(participant => participant._id)
         });
-
+console.log("new class created")
         await newClassroom.save();
         res.status(201).json({ newClassroom});
 
@@ -61,7 +61,7 @@ export const create = async (req, res) => {
 export const getClassroom = async (req, res) => {
     try {
         const { admin_id } = req.body;
-
+        console.log(admin_id)
         if (!admin_id) {
             return res.status(400).json({ message: 'Please provide admin_id' });
         }
@@ -78,7 +78,7 @@ export const getClassroom = async (req, res) => {
             subject: classroom.subject,
             participants: classroom.participants
         }));
-
+        console.log(result);
         res.status(200).json({ classrooms: result });
 
     } catch (error) {
@@ -86,3 +86,4 @@ export const getClassroom = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+

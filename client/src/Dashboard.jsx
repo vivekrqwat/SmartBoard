@@ -10,7 +10,7 @@ import Attendance from './Component/form/Attendance';
 import { ToastContainer, toast } from 'react-toastify';
 import Request from './Component/Request/Requset';
 import { Atd_popUp } from './Component/Atd_pop_up/Atd_popUp';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 export default function Dashboard() {
@@ -19,9 +19,9 @@ export default function Dashboard() {
   const[access,setacess]=useState(false);
        const navigate = useNavigate();
    console.log("dashboard value",access)
-
+const{roomid}=useParams();
     const[message,setmessage]=useState('');
-    const{pen,penColor,username,setatd,atd,mark,setmark,roomid,student,setstudent}=useContext(ThemeContext);
+    const{pen,penColor,username,setatd,atd,mark,setmark,student,setstudent}=useContext(ThemeContext);
     const boxstyle={
         display:"flex",
         justifyContent:"space-evenly",
@@ -32,9 +32,9 @@ export default function Dashboard() {
         
     }
  
-    console.log(username)
+    console.log(username,roomid,"roomido")
     const handleChange = async () => {
-    
+  
       if (!canvasRef.current || !socketref.current||(username!='admin'&&!access)) return;
       console.log("change")
       const paths = await canvasRef.current.exportPaths();
@@ -247,7 +247,7 @@ navigate('/');
            console.log("Updated atd:", message);
          }, [message]);
   
-console.log(student)
+console.log(student,roomid,"roomid")
 
   return (
     

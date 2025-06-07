@@ -15,6 +15,7 @@ export default function Drawer1({socketref}) {
     // const a=["sam","kamal","vivek"];
     // it is an highorder functioon ,function ke ander function, 
     // agr yeah nhai hoga to setopen bhoot jada rerender hoga
+    console.log(student,"drawer")
     const drawer=(
         <Box width={"250px"} 
         sx={{
