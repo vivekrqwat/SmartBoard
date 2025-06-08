@@ -40,7 +40,7 @@ const useAdminLogin = () => {
             setUser(data);
 
             toast.success("Login successful!");
-            console.log(data);
+            console.log(data,"am");
 
         } catch (error) {
             toast.error("Something went wrong. Please try again.");

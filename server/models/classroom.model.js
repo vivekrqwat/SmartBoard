@@ -12,13 +12,13 @@ const classroomSchema = new mongoose.Schema({
     required: true
   },
   admin_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Admin',
+    type: String,
+    // ref: 'Admin',
     required: true
   },
 
   participants: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     default: [],
     ref: 'User'
   }]

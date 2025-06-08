@@ -1,13 +1,47 @@
 import React, { useContext } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../ThemeContex';
-
+import useUserLogin from '../../Hooks/useUserLogin';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 export const Atd_popUp = ({ message,socketref }) => {
      const navigate = useNavigate();
-         const{roomid}=useContext(ThemeContext);
-     
+         const{subject}=useContext(ThemeContext);
+         const {user}=useUserLogin();
+      const{roomid}=useParams()
   const handleCopy = () => {
     navigator.clipboard.writeText(message);
+
+
+  console.log('clicked  ',roomid,user.fullname,subject,user.employee_id);
+console.log(message,"mesg");
+const participants1=message.split(",");
+console.log(participants1);
+const cleanParticipants = participants1[0] === 'None'
+  ? []
+  : participants1.filter(Boolean); 
+console.log(cleanParticipants,"clear part")
+  const payload={
+  classroom_id:roomid,
+  subject:subject,
+  admin_id:user.employee_id,
+  participants:cleanParticipants
+}
+try{
+  axios.post("http://localhost:5000/classroom/api/createroom",payload,
+     {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+  )
+}catch(e){
+  toast('something went wrong',e);
+  return;
+}
+
+
+
      
        localStorage.removeItem('mark');
         localStorage.removeItem('students');

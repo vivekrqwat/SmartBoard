@@ -13,6 +13,7 @@ export const ThemeProvider=({children})=>{
     const[rollnumber,setrollnumber]=useState();
       const [roomid, setroomid] = useState('');
       const[student,setstudent]=useState([{}]);
+      const[subject,setsubject]=useState();
       //load username
         useEffect(() => {
     const storedUsername = JSON.parse(localStorage.getItem("username"));
@@ -20,8 +21,11 @@ export const ThemeProvider=({children})=>{
       setusername(storedUsername);
     }
 
-   
+
   }, []);
+
+  
+
 
 
 
@@ -40,7 +44,8 @@ export const ThemeProvider=({children})=>{
         mark,setmark,
         rollnumber,setrollnumber,
         roomid,setroomid,
-        student,setstudent
+        student,setstudent,
+        subject,setsubject
     }
     return(
         <ThemeContext.Provider value={themeValue}>

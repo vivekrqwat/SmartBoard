@@ -17,6 +17,7 @@ export default function Dashboard() {
   const socketref=useRef(null);
   const canvasRef = useRef(null);
   const[access,setacess]=useState(false);
+  
        const navigate = useNavigate();
    console.log("dashboard value",access)
 
@@ -53,12 +54,28 @@ const changeMark=(number)=>{
 
 
   let index=Number(number)
-  console.log(mark,",",index);
+  console.log(mark,",",index,"k");
   let updatemark=JSON.parse(localStorage.getItem('mark'));
   console.log("updated",updatemark);
+
+
+  // Handle null case
+  if (!updatemark) {
+    updatemark = Array(100).fill(0);
+     localStorage.setItem('mark', JSON.stringify(updatemark));
+     // or [] if you're expecting an array
+     console.log(updatemark,"setup")
+  }
+
+  // Initialize if undefined
+  if (updatemark[index] === undefined) {
+    updatemark[index] = 0;
+  }
+
+
   updatemark[index]+=1;
   localStorage.setItem('mark', JSON.stringify(updatemark));
-  // console.log(updatemark[index],"yha hua change");
+  console.log(updatemark[index],"yha hua change");
 
   setmark(updatemark);
   console.log(mark)
@@ -167,6 +184,7 @@ socketref.current.on('disconnect-del',({username,id})=>{
 
         //recv mark
         socketref.current.on('r-mark', ({ rollnumber }) => {
+          
           console.log("socket roll", rollnumber);
           changeMark(rollnumber);
         });
@@ -211,8 +229,12 @@ socketref.current.on('disconnect-del',({username,id})=>{
    const leave=()=>{
     if(username=='admin'){
       console.log("leave ho gya",mark);
-      const mark1= JSON.parse(localStorage.getItem('mark')) || [];
-
+      let mark1= JSON.parse(localStorage.getItem('mark')) || [];
+      console.log(mark1,"mk")
+      if (!Array.isArray(mark1)) {
+      console.warn("mark1 is not an array, defaulting to []");
+      mark1 = [];
+    }
       let message="";
       {mark1.map((i,key)=>{
        i>=2?message+=`${key},`:"";
