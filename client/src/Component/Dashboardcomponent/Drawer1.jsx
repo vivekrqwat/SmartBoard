@@ -29,7 +29,7 @@ export default function Drawer1({socketref}) {
           
               
 
-               <Typography fontSize={20} color='green'>JOinee</Typography>
+               <Typography fontSize={20} color='green'>Join</Typography>
            <Divider sx={{ bgcolor: 'black', height: 2 }} />
             <List 
             sx={{

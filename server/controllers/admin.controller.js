@@ -52,7 +52,7 @@ export const login = async (req,res)=>{
             return res.status(401).json({ error: 'Invalid password' });
         }
         generateToken(admin._id, res);
-        res.status(200).json({fullname: admin.fullname, email: admin.email, employee_id: admin.employee_id });
+        res.status(200).json({admin_id: admin._id, fullname: admin.fullname, email: admin.email, employee_id: admin.employee_id });
 
     } catch (error) {
         res.status(400).json({ error: error.message });

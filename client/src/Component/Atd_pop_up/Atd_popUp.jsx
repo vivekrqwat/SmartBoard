@@ -9,11 +9,11 @@ export const Atd_popUp = ({ message,socketref }) => {
          const{subject}=useContext(ThemeContext);
          const {user}=useUserLogin();
       const{roomid}=useParams()
-  const handleCopy = () => {
+  const handleCopy = async() => {
     navigator.clipboard.writeText(message);
 
 
-  console.log('clicked  ',roomid,user.fullname,subject,user.employee_id);
+  console.log('clicked  ',roomid,user.fullname,subject,user.admin_id);
 console.log(message,"mesg");
 const participants1=message.split(",");
 console.log(participants1);
@@ -24,11 +24,11 @@ console.log(cleanParticipants,"clear part")
   const payload={
   classroom_id:roomid,
   subject:subject,
-  admin_id:user.employee_id,
+  admin_id:user.admin_id,
   participants:cleanParticipants
 }
 try{
-  axios.post("http://localhost:5000/classroom/api/createroom",payload,
+  await axios.post("http://localhost:5000/classroom/api/createroom",payload,
      {
   headers: {
     'Content-Type': 'application/json'
