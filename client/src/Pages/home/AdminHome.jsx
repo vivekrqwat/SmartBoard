@@ -13,6 +13,7 @@ import {
   ListItemText,
   IconButton
 } from '@mui/material';
+
 import SearchIcon from '@mui/icons-material/Search';
 import useUserLogin from '../../Hooks/useUserLogin';
 import { ThemeContext } from '../../ThemeContex';
@@ -23,31 +24,14 @@ import axios from 'axios';
 
 const AdminHome = () => {
   const { subject, setsubject, setroomid } = useContext(ThemeContext);
-  // const data = [
-  //   {
-  //     subject: "Data Structures",
-  //     date: "18/02/2025",
-  //     day: "Wednesday",
-  //     participants: "4,7,8,9,12,14,15,16,36,34,37,38,39,48,49,50,56"
-  //   },
-  //   {
-  //     subject: "Data Structures",
-  //     date: "17/02/2025",
-  //     day: "Monday",
-  //     participants: "2,4,6,8,22,24,25,26,31,32,35,37,40,41"
-  //   },
-  //   {
-  //     subject: "Data Structures",
-  //     date: "21/02/2025",
-  //     day: "Friday",
-  //     participants: "1,3,4,5,7,8,14,15,19,21,25,26,27,35,38,39"
-  //   }
-  // ]
+ 
   
   const [data,setData] = useState();
 
   const [sortedData, setSortedData] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
+
+
   useEffect(() => {
     async function getClassroomsForAdmin() {
     try {
@@ -63,10 +47,11 @@ const AdminHome = () => {
       const classrooms = res.data.classrooms;
 
       const cleaned = classrooms.filter(item => Object.keys(item).length > 0); // remove empty objects
-      console.log("Cleaned classrooms:", cleaned,);
+
+      // console.log("Cleaned classrooms:", cleaned,);
 
       setData(cleaned);
-
+      console.log(`data  is ${data}`)
       // --------------------------------------------------------------------------------------------------------------------------
 
 
@@ -108,10 +93,8 @@ const AdminHome = () => {
 
 
 
-
-
   const handleInfo = (item) => {
-    console.log(item);
+    console.log("items are " ,item);
     setCurrentItem(item);
   }
   //
@@ -130,7 +113,6 @@ const AdminHome = () => {
     }
   }
 
-  
 
   ;
   const [searchTerm, setSearchTerm] = useState('');
@@ -145,7 +127,8 @@ const AdminHome = () => {
   let manuallyFilteredData = [];
   for (let i = 0; i < sortedData.length; i++) {
     const item = sortedData[i];
-    console.log(item);
+    // console.log(item);
+
     const subject = item.subject;
     const date = item.date;
     const term = searchTerm;
@@ -179,16 +162,18 @@ const AdminHome = () => {
 
   return (
     <Box sx={{
-      minHeight: '100vh',
+      // Height: '100vh',
       background: '#000000',
       color: 'white',
       display: 'flex',
       flexDirection: 'column'
+
     }}>
       <Logout />
       <Box sx={{
         display: 'flex',
         flex: 1,
+        height: '100vh',
         p: 3,
         gap: 3
       }}>
@@ -202,6 +187,8 @@ const AdminHome = () => {
             borderRadius: 2,
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'scroll',
+            height: '100vh',
             gap: 2
           }}
         >
@@ -356,9 +343,13 @@ const AdminHome = () => {
                 {currentItem.subject}
               </Typography>
 
-              <Typography variant="h6" sx={{ color: '#000000', ml: 4 }}>
-                <strong>Presentees:</strong> {currentItem.participants}
-              </Typography>
+
+            <Typography variant="h6" sx={{ color: '#000000', ml: 4 }}>
+            <strong>Presentees (Class Roll No):</strong>
+            {currentItem.participants.map((p) => p.class_rollno).join(", ")}
+            </Typography>
+
+
             </Paper>
           )}
 

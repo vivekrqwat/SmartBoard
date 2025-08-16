@@ -33,18 +33,15 @@ export default function Dashboard() {
         
     }
  
-    console.log(username)
     const handleChange = async () => {
     
       if (!canvasRef.current || !socketref.current||(username!='admin'&&!access)) return;
-      console.log("change")
       const paths = await canvasRef.current.exportPaths();
       socketref.current.emit('drawing', {
         roomid: roomid,
         data: paths,
       });
     
-      console.log("Stroke finished and sent");
     };
     
     
@@ -54,9 +51,8 @@ const changeMark=(number)=>{
 
 
   let index=Number(number)
-  console.log(mark,",",index,"k");
   let updatemark=JSON.parse(localStorage.getItem('mark'));
-  console.log("updated",updatemark);
+  // console.log("updated",updatemark);
 
 
   // Handle null case

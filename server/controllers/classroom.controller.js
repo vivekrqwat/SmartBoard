@@ -18,6 +18,7 @@ export const create = async (req, res) => {
         console.log(existingClassroom, "l")
 
         console.log(participants, "is")
+
         const now = new Date(); 
         const newClassroom = new Classroom({
             classroom_id,
@@ -69,23 +70,29 @@ export const create = async (req, res) => {
 
 export const getClassroom = async (req, res) => {
     try {
+
         const { admin_id } = req.body;
 
         if (!admin_id) {
-            return res.status(400).json({ message: 'Please provide admin_id' });
+            // return res.status(400).json({ message: 'Please provide admin_id' });
+            return res.status(400)
         }
 
         const classrooms = await Classroom.find({ admin_id })
             .select('subject participants date day') // select only subject & participants
             .populate('participants', 'fullname university_rollno class_rollno'); // populate participant info
+
         console.log("admin", admin_id, classrooms);
+
         if (!classrooms || classrooms.length === 0) {
             return res.status(404).json({ message: 'No classrooms found for this admin' });
         }
 
         const result = classrooms.map(classroom => {
             // current date and time
-console.log(classroom,"calss obhject");
+
+            console.log(classroom,"class object");
+
             return {
                 subject: classroom.subject,
                 participants: classroom.participants,

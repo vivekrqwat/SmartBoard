@@ -13,13 +13,15 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const { setusername } = useContext(ThemeContext)
   const {user}=useUserLogin()
+
   console.log(user,"user from rohit");
-console.log(user.fullname,"after login")
+console.log(user?.fullname,"after login")
+
   const handleSubmit = (e) => {
     e.preventDefault()
   
-    if (roomId && user.fullname) {
-      setusername(user.fullname)
+    if (roomId && user?.fullname) {
+      setusername(user?.fullname)
       navigate(`/editor/${roomId}`)
     }
   }
