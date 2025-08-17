@@ -143,7 +143,7 @@ const AdminHome = () => {
             }}
           />
 
-          <List sx={{ overflow: 'auto', flex: 1 }}>
+          <List sx={{ overflow: 'hidden', flex: 1 }}>
             {manuallyFilteredData.length > 0 ? (
               manuallyFilteredData.map((item, index) => (
                 <ListItem
@@ -189,7 +189,23 @@ const AdminHome = () => {
                       }}>
                         <Typography variant="body1">{item.date}</Typography>
                         <Typography variant="body1">{item.day}</Typography>
+                        
                       </Box>
+       <Box 
+  sx={{ 
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    padding: "8px 12px",
+   width:"100%",           // fixed width so wrapping happens
+    wordWrap: "break-word",   // allow wrapping
+    whiteSpace: "normal"      // allow text to break into multiple lines
+  }}
+>
+  <Typography variant="body1">
+    Participants: {item.participants}
+  </Typography>
+</Box>
+                  
                     </Box>
                   </Button>
                 </ListItem>
@@ -230,7 +246,7 @@ const AdminHome = () => {
                 mb: 3
               }}>
                 <Typography variant="h6">
-                  <strong>Date:</strong> {currentItem.date}
+                  <strong>Date :</strong> {currentItem.date}
                 </Typography>
                 <Typography variant="h6">
                   <strong>Day:</strong> {currentItem.day}
@@ -245,13 +261,13 @@ const AdminHome = () => {
                   mb: 4,
                   textDecoration: 'underline',
                   textDecorationThickness: '3px',
-                  color: '#ffdd57'
+                  color: 'white'
                 }}
               >
                 {currentItem.subject}
               </Typography>
 
-              <Typography variant="h6" sx={{ ml: 4 }}>
+              <Typography variant="h6" sx={{ ml: 4 ,color:"white"}}>
                 <strong>Presentees:</strong> {currentItem.participants}
               </Typography>
             </Paper>
